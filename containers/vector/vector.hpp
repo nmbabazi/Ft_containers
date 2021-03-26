@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/03/25 17:01:32 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/03/26 16:44:21 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VECTOR_HPP
 
 #include <memory>
+#include "iterator.hpp"
 
 namespace ft
 {
@@ -30,50 +31,10 @@ namespace ft
 			typedef ptrdiff_t			difference_type;
     		typedef size_t				size_type;
 			//typedef Alloc				alloc;
-        	/*typedef VectorIterator<value_type> iterator;
-    		typedef VectorIterator<value_type const> const_iterator;
-    		typedef ReverseIterator<iterator> reverse_iterator;
-    		typedef ReverseIterator<const_iterator> const_reverse_iterator;*/
-			
-///////////////////////class randiterator//////////////////////////////
-			template <typename Vector>
-			class VectIterator
-			{
-				public:
-				typedef typename Vector::value_type		value_type;
-				typedef value_type*						pointer;
-				typedef value_type&						reference;
-				typedef ptrdiff_t						difference_type;
-
-				VectIterator(): _ptr(NULL){}
-				VectIterator(pointer ptr): _ptr(ptr){}
-				VectIterator(VectIterator &cp){ _ptr = cp._ptr;}
-				VectIterator& operator=(const VectIterator& cp)
-				{ if (this != &cp)
-						this->_ptr = cp._ptr;
-					return *this;}
-				~VectIterator();
-				
-				reference		operator*(){ return *_ptr;}
-				pointer			operator->(){ return _ptr;}
-				value_type		operator[](int n) { return *(_ptr + n);}
-				VectIterator	&operator++(){ _ptr++; return *this;}
-				VectIterator	operator++(int){ VectIterator it = *this; ++(*this); return it;}
-				VectIterator	&operator--(){ _ptr--; return *this;}
-				VectIterator	operator--(int){ VectIterator it = *this; --(*this); return it;}
-
-				difference_type	operator-(VectIterator const &it) { return (this->_ptr - it._ptr);}
-				bool			operator==(const VectIterator &it){ return _ptr == it._ptr;}
-				bool			operator!=(const VectIterator &it){ return _ptr != it._ptr;}
-				bool			operator>=(const VectIterator &it){ return _ptr >= it._ptr;}
-				bool			operator<=(const VectIterator &it){ return _ptr <= it._ptr;}
-				bool			operator>(const VectIterator &it){ return _ptr > it._ptr;}
-				bool			operator<(const VectIterator &it){ return _ptr < it._ptr;}
-				
-				private:
-					pointer _ptr;
-				
-			};
+        	typedef VectIterator<T> iterator;
+    		// typedef VectorIterator<value_type const> const_iterator;
+    		// typedef ReverseIterator<iterator> reverse_iterator;
+    		// typedef ReverseIterator<const_iterator> const_reverse_iterator;
             
             vector(const allocator_type& alloc = allocator_type());
             vector(size_type n, const value_type& val = value_type(),
