@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/03/26 16:58:14 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/03/26 17:34:50 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ namespace ft
         bool			operator<(const VectIterator &it){ return _ptr < it._ptr;}
         
         private:
-            value_type *_ptr;
-        
+            value_type *_ptr; 
     };
 
     template <typename T>
@@ -118,7 +117,6 @@ namespace ft
         
         private:
             value_type *_ptr;
-        
     };
 }
 
