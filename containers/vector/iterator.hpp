@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/03/27 14:18:38 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/03/27 17:36:23 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ namespace ft
     class VectIterator
     {
         public:
+        //bool                            is_iterator = true;
         typedef T                               value_type;
         typedef ptrdiff_t						difference_type;
 
@@ -72,6 +73,7 @@ namespace ft
     class ConstVectIterator
     {
         public:
+        //bool                            is_iterator = true;
         typedef const T                               value_type;
         typedef ptrdiff_t						difference_type;
 
@@ -125,6 +127,7 @@ namespace ft
     class VectRIterator
     {
         public:
+        //bool                            is_iterator = true;
         typedef T                               value_type;
         typedef ptrdiff_t						difference_type;
 
@@ -176,6 +179,7 @@ namespace ft
     class ConstVectRIterator
     {
         public:
+        //bool                            is_iterator = true;
         typedef const T                               value_type;
         typedef ptrdiff_t						difference_type;
 
