@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/03/26 16:44:21 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/03/27 13:30:36 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,29 @@
 # define VECTOR_HPP
 
 #include <memory>
+#include <iostream>
 #include "iterator.hpp"
+#include "../../allocator.hpp"
 
 namespace ft
 {
-    template <typename T, typename Alloc = std::allocator<T> > 
+    template <typename T, typename Alloc = ft::allocator<T>> 
     class vector
     {
         public:
 ///////////////////////typedef//////////////////////////////        
             typedef T					value_type;
-            typedef value_type&			reference;
-            typedef value_type const & 	const_reference;
-            typedef value_type*			pointer;
-            typedef value_type const * 	const_pointer;
+            typedef T&			reference;
+            typedef const T&            const_reference;
+            typedef T*                  pointer;
+            typedef const T*            const_pointer;
 			typedef ptrdiff_t			difference_type;
     		typedef size_t				size_type;
-			//typedef Alloc				alloc;
+			typedef Alloc				alloc;
         	typedef VectIterator<T> iterator;
-    		// typedef VectorIterator<value_type const> const_iterator;
-    		// typedef ReverseIterator<iterator> reverse_iterator;
+    		typedef VectRIterator<T> r_iterator;
     		// typedef ReverseIterator<const_iterator> const_reverse_iterator;
+    		// typedef VectorIterator<value_type const> const_iterator;
             
             vector(const allocator_type& alloc = allocator_type());
             vector(size_type n, const value_type& val = value_type(),
