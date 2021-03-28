@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 11:20:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/03/27 13:24:14 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/03/28 13:46:36 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ namespace ft
 
             pointer address(reference x ) const{ return &x;}
             const_pointer address(const_reference x ) const{ return &x}
+            
+            size_type max_size() const { return static_cast<size_t>(-1) / sizeof(value_type);}
 
             pointer allocate(size_type n, allocator<void>::const_pointer hint=0)
             {
