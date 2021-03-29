@@ -6,7 +6,7 @@
 /*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/03/29 10:51:21 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/03/29 11:32:39 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,14 +267,55 @@ namespace ft
             pointer         _vector;
             size_type       _size;
             size_type       _capacity;
+        /////////////////////overload///////////////////////////////
+        public:
+        friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+        {
+            if (lhs._size != rhs._size)
+                return false;
+            for (size_t i = 0; i < lhs._size; i++)
+            {
+                if (lhs._vector[i] != rhs._vector[i])
+                    return false;
+            }
+            return true;
+        }
+        friend bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs ) { return !(lhs == rhs);}
+        friend bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+        {	
+            c_iterator lit = lhs.begin();
+		    c_iterator rit = rhs.begin();
+
+		    while (lit != lhs.end())
+		    {
+			    if (rit == rhs.end() || *rit < *lit)
+				    return false;
+			    else if (*lit < *rit)
+				    return true;
+			    ++lit;
+			    ++rit;
+		    }
+		    return rit != rhs.end();
+        }
+        friend bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs )
+        { 
+            if (lhs == rhs || lhs < rhs)
+                return true;
+            return false;
+        }
+		friend bool operator>( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs )
+        { 
+            if (!(lhs == rhs) && !(lhs < rhs)) 
+                return true;
+            return false;
+        }
+		friend bool operator>=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs )
+        { 
+            if (lhs == rhs || lhs > rhs)
+                return true;
+            return false;
+        }
     };
-/////////////////////overload///////////////////////////////
-// operator==
-// operator!=
-// operator<
-// operator<=
-// operator>
-// operator>=
 }
 
 #endif
