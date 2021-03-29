@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/03/28 17:31:08 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/03/29 10:51:21 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,12 @@ namespace ft
             }
             vector& operator=(const vector& x)
             {
-                //remplacer le curent content // empty;
-                //modifier la size //pushback tout x
+                if (_vector)
+                    clear();
+                if (_capacity < x._capacity)
+                    reserver(x._capacity);
+                for(iterator start = x.begin();start != x.end(); start++)
+                    push_back(*start);
             }
 ///////////////////////iterator//////////////////////////////
             iterator begin(){return iterator(_vector);}
@@ -189,7 +193,6 @@ namespace ft
                     _size--;
                 }
             }
-        /*
             iterator insert (iterator position, const value_type& val)
             {
                 difference_type diff = position - begin();			
@@ -199,134 +202,66 @@ namespace ft
             }
             void insert (iterator position, size_type n, const value_type& val)
             {
-                pointer temp;
-                size_type l = 0;
-                size_type newCapacity;
-                if (_size + n > _capacity)
-                {
-                    temp = _alloc.allocate(_capacity + n);
-                    newCapacity = _capacity + n;
-                }
-                else
-                {
-                    temp = _alloc.allocate(_capacity);
-                    newCapacity = _capacity + n;
-                }
-                for(iterator start = begin(); start != position; start++;)
-                {
-                    _alloc.construct(temp + l, *start);
-                    _alloc.destroy(&(*start));
-                    l++;
-                }
-                for(size_type i = 0; i <= n; i++)
-                {
-                    _alloc.construct(temp + l, val);
-                    l++;
-                }
-                for(position != end(); position++)
-                {
-                    _alloc.construct(temp + l, *(position));
-                    _alloc.destroy(&(*position));
-                    l++;
-                }
-                _size = l;
-                _capacity = newCapacity;
-                _alloc.deallocate(_vector, _capacity);
-                _vector = temp;
+                shiftRight(n, position);
+                iterator end = position + n;
+                for (position != end; position++)
+                    _alloc.construct(&(*position), val);
             }
             template <class InputIterator>
             void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<std::numeric_limits<InputIterator>::is_integer, InputIterator>::type = NULL)
             {
-                pointer temp;
-                size_type l = 0;
-                size_type newCapacity;
-                if (_size + n > _capacity)
-                {
-                    temp = _alloc.allocate(_capacity + n);
-                    newCapacity = _capacity + n;
-                }
-                else
-                {
-                    temp = _alloc.allocate(_capacity);
-                    newCapacity = _capacity + n;
-                }
-                for(iterator start = begin(); start != position; start++;)
-                {
-                    _alloc.construct(temp + l, *start);
-                    _alloc.destroy(&(*start));
-                    l++;
-                }
-                for(first != last; first++)
-                {
-                    _alloc.construct(temp + l, *first);
-                    l++;
-                }
-                for(position != end(); position++)
-                {
-                    _alloc.construct(temp + l, *(position));
-                    _alloc.destroy(&(*position));
-                    l++;
-                }
-                _size = l;
-                _capacity = newCapacity;
-                _alloc.deallocate(_vector, _capacity);
-                _vector = temp;
-                
+                difference_type diff = last - first;
+                shiftRight(diff, position);
+                iterator end = position + diff;
+                for (position != end; position++; first != last; first)
+                    _alloc.construct(&(*position), *first);
             }
             iterator erase (iterator position)
             {
-                /////do a leftshift and rightshift fonction
+                _alloc.destroy(&(*position));
+                shiftLeft(1, position);
             }
             iterator erase (iterator first, iterator last)
             {
-                pointer temp;
-                size_type l = 0;
                 difference_type diff = last - first;
-                size_type newCapacity;
-                if (diff > _capacity)
-                {
-                    temp = _alloc.allocate(_capacity + diff);
-                    newCapacity = _capacity + diff;
-                }
-                else
-                {
-                    temp = _alloc.allocate(_capacity);
-                    newCapacity = _capacity + diff;
-                }
-                for(iterator start = begin(); start != first; start++;)
-                {
-                    _alloc.construct(temp + l, *start);
-                    _alloc.destroy(&(*start));
-                    l++;
-                }
-                for(first != last; first++)
+                for (first != last; first++)
                     _alloc.destroy(&(*first));
-                for(last != end(); last++)
-                {
-                    _alloc.construct(temp + l, *(last));
-                    _alloc.destroy(&(*last));
-                    l++;
-                }
-                _alloc.deallocate(_vector, _capacity);
-                _capacity = newCapacity;
-                _vector = temp;
-            }*/
+                shiftLeft(diff, last)
+            }
             void clear()
             {
                 while (_size)
-                    pop.back();
+                    pop_back();
             }
             void swap (vector& x)
             {
-                
+                vector tmp();
+                tmp = x;
+                x = *this;
+                *this = tmp;
+                tmp.clear();
+                tmp._alloc.deallocate(tmp._vector, tmp._capacity);
             }
             
         private:
-            //////utils fonctions///
 
-            shiftRight();
-            shiftLeft();
-            vect_copy();
+            void    shiftRight(size_type n, iterator position)
+            {
+                iterator end = end() - 1;
+                _alloc.allocate(n, &(*end));
+                for(iterator move = end; move != position + 1; move--)
+                    _alloc.construct(&(*move) + n, *move);
+                for(end != position + 1; end--)
+                    _alloc.destroy(end);
+            }
+            void    shiftLeft(size_type n, iterator position)
+            {
+                iterator end = position - n;
+                for(iterator move = position; move != end(); move++)
+                    _alloc.construct(&(*move) - n, *move);
+                for(position != end(); position++)
+                    _alloc.destroy(position);
+            }
             
             allocator_type  _alloc;
             pointer         _vector;
