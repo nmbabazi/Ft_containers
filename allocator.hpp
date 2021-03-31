@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocator.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 11:20:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/03/28 13:46:36 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/03/29 13:44:38 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 namespace ft
 {
     template <typename T> 
-    class allocator
+    class Allocator
     {
         public:
             typedef T					value_type;
@@ -30,30 +30,23 @@ namespace ft
             typedef const T*            const_pointer;
 			typedef ptrdiff_t			difference_type;
     		typedef size_t				size_type;
-
-			class bad_alloc : public std::exception
-			{
-			public:
-				virtual const char *what() const throw(){return "bad allocation";}
-			};
             
-            allocator() throw();	
-            allocator (const allocator& alloc) throw();
+            Allocator() throw(){}
+            Allocator (const Allocator& alloc) throw(){}
             template <class U>
-            allocator (const allocator<U>& alloc) throw();
-            ~allocator ( ) throw;
+            Allocator (const Allocator<U>& alloc) throw(){}
+            ~Allocator () throw(){}
 
             pointer address(reference x ) const{ return &x;}
-            const_pointer address(const_reference x ) const{ return &x}
+            const_pointer address(const_reference x ) const{ return &x;}
             
             size_type max_size() const { return static_cast<size_t>(-1) / sizeof(value_type);}
 
-            pointer allocate(size_type n, allocator<void>::const_pointer hint=0)
+            pointer allocate(size_type n)
             {
-                (void)hint;
                 pointer ret;
                 if (!(ret = reinterpret_cast<pointer>(::operator new(n * (sizeof(value_type))))))
-                    throw bad_alloc;
+                    throw std::bad_alloc();
                 return ret;
             }
             void deallocate (pointer p, size_type n)
