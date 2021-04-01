@@ -6,24 +6,61 @@
 /*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/01 14:03:48 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/01 17:53:48 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIST_HPP
 # define LIST_HPP
 
+#include <memory>
+#include <iostream>
+#include <limits>
+#include "iterator.hpp"
+#include "../../allocator.hpp"
+#include "../../utils.hpp"
+
 namespace ft
 {
-    template <class T> 
+    template <typename T, typename Alloc = ft::Allocator<T> > 
     class list
     {
+        public:
 ///////////////////////typedef//////////////////////////////        
-
+            typedef T					    value_type;
+            typedef T&			            reference;
+            typedef const T&                const_reference;
+            typedef T*                      pointer;
+            typedef const T*                const_pointer;
+			typedef ptrdiff_t			    difference_type;
+    		typedef size_t				    size_type;
+			typedef Alloc				    allocator_type;
+            
+        private:   
+			struct Node
+			{
+				value_type  data;
+				Node        *next;
+				Node        *prev;
+			};
+            allocator_type  _alloc;
+            Node            *_list;
+            size_type       _size;
+            
+            push_node(Node **head, value_type val = value_type())
+            {
+                Node *new_node = this->_alloc()
+            }
 ///////////////////////constructeur//////////////////////////
-        public:          
-            list (const allocator_type& alloc = allocator_type());	
-            list (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type());	
+        public:
+            typedef ListIterator<Node>         iterator;
+    		typedef RListIterator<Node>        r_iterator;
+
+            list (const allocator_type& alloc = allocator_type()):_list(NULL), _alloc(alloc), _size(0){}
+            list (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type())
+            {
+                
+            }	
             template <class InputIterator>
             list (InputIterator first, InputIterator last,const allocator_type& alloc = allocator_type());	
             list (const list& x);
