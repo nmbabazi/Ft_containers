@@ -6,7 +6,7 @@
 /*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/03/31 15:42:46 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/01 10:28:46 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ int main()
     std::cout << std::endl;
     std::cout << "                 ****iterator";               
     std::cout << std::endl << std::endl;
-    ft::Vector<int> vec1;
+    ft::vector<int> vec1;
     for (int i = 1; i <= 11; i++)
     {
         vec1.push_back(i);
         std::cout << "size = " << vec1.size() << "  capacity = " << vec1.capacity() << std::endl;
     }
-    ft::Vector<int>::iterator it = vec1.begin();
-    ft::Vector<int>::iterator rit = vec1.end();
+    ft::vector<int>::iterator it = vec1.begin();
+    ft::vector<int>::iterator rit = vec1.end();
     std::cout << "vector :";
     while (it != rit)
     {
@@ -38,9 +38,9 @@ int main()
     std::cout << std::endl;
     std::cout << "                 ****const_iterator";
     std::cout << std::endl << std::endl;
-    const ft::Vector<int> vec2(vec1.begin() + 3, vec1.end());       
-    ft::Vector<int>::c_iterator cit = vec2.begin(); 
-    ft::Vector<int>::c_iterator crit = vec2.end();
+    const ft::vector<int> vec2(vec1.begin() + 3, vec1.end());       
+    ft::vector<int>::c_iterator cit = vec2.begin(); 
+    ft::vector<int>::c_iterator crit = vec2.end();
     std::cout << "vector :";
     while (cit != crit)
     {
@@ -50,8 +50,8 @@ int main()
     std::cout << std::endl;
         std::cout << "                 ****reverse_iterator";
     std::cout << std::endl;      
-    ft::Vector<int>::r_iterator rev_it = vec1.rbegin(); 
-    ft::Vector<int>::r_iterator rev_rit = vec1.rend();
+    ft::vector<int>::r_iterator rev_it = vec1.rbegin(); 
+    ft::vector<int>::r_iterator rev_rit = vec1.rend();
     std::cout << "vector :";
     while (rev_it != rev_rit)
     {
@@ -61,8 +61,8 @@ int main()
     std::cout << std::endl;
     std::cout << "                 ****const_reverse_iterator";
     std::cout << std::endl;      
-    ft::Vector<int>::cr_iterator crev_it = vec2.rbegin(); 
-    ft::Vector<int>::cr_iterator crev_rit = vec2.rend();
+    ft::vector<int>::cr_iterator crev_it = vec2.rbegin(); 
+    ft::vector<int>::cr_iterator crev_rit = vec2.rend();
     std::cout << "vector :";
     while (crev_it != crev_rit)
     {
@@ -74,16 +74,16 @@ int main()
     std::cout << "////////////////////////constructeur///////////////////////////";               
     std::cout << std::endl;
     std::cout << "                 ****constructeur par copy" << std::endl;
-    ft::Vector<int> vec3(vec1);
+    ft::vector<int> vec3(vec1);
     std::cout << "vector 3:"; vec3.printvector();
     std::cout << std::endl;
     std::cout << "                 ****constructeur par assignation" << std::endl;
-    ft::Vector<int> vec4;
+    ft::vector<int> vec4;
     vec4 = vec3;
     std::cout << "vector 4:"; vec4.printvector();
     std::cout << std::endl;
     std::cout << "                 ****constructeur par range" << std::endl;
-    ft::Vector<int> vec5(vec4.begin() + 3, vec4.end());
+    ft::vector<int> vec5(vec4.begin() + 3, vec4.end());
     std::cout << "vector 5:"; vec5.printvector();
     std::cout << std::endl;   
     std::cout << "////////////////////////capacity///////////////////////////";               
@@ -93,7 +93,7 @@ int main()
     std::cout << "                 ****max_size*************" << std::endl << std::endl;
     std::cout << "max_size of vec1 = " << vec1.max_size() << " max_size of vec2 = " << vec2.max_size() << std::endl;
     std::cout << "                 ****empty*************" << std::endl << std::endl;
-    ft::Vector<int> empt;
+    ft::vector<int> empt;
     std::cout << "is vec1 empty ? " << vec1.empty() << " is vec2 empty ? " << vec2.empty()
     << " is empt empty ?" << empt.empty() << std::endl;
     std::cout << "                 ****capacity*************" << std::endl << std::endl;
@@ -154,7 +154,7 @@ int main()
     std::cout << "vec1 initial size(" << vec1.size() << ") capacity (" << vec1.capacity() << "): "; vec1.printvector();
     vec1.insert(vec1.begin() + 2, 2, 100);
     std::cout << "vec1 inserte 2 * 100 size(" << vec1.size() << ") capacity (" << vec1.capacity() << "): "; vec1.printvector();
-    ft::Vector<int> test(5, 100);
+    ft::vector<int> test(5, 100);
     std::cout << "test initial size(" << test.size() << ") capacity (" << test.capacity() << "): "; test.printvector();
     test.insert(test.begin() + 1, vec2.begin() + 4, vec2.end() - 2);
     std::cout << "insert vec1 in test size(" << test.size() << ") capacity (" << test.capacity() << "): "; test.printvector();
@@ -170,7 +170,7 @@ int main()
     std::cout << "vec1 initial size(" << vec1.size() << ") capacity (" << vec1.capacity() << "): "; vec1.printvector();
     std::cout << std::endl << "                 ****swap*************" << std::endl << std::endl;
     std::cout << std::endl;
-    ft::Vector<int> swaper(vec2.begin(), vec2.end());
+    ft::vector<int> swaper(vec2.begin(), vec2.end());
     std::cout << "swaper initial size(" << swaper.size() << ") capacity (" << swaper.capacity() << "): "; swaper.printvector();
     std::cout << "vec1 initial size(" << vec1.size() << ") capacity (" << vec1.capacity() << "): "; vec1.printvector();
     vec1.swap(swaper);
