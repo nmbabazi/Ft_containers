@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/01 14:05:40 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/02 14:01:14 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ namespace ft
             vector(const allocator_type& alloc = allocator_type()):_alloc(alloc),_size(0), _capacity(0){ _vector = NULL;}
             vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()):_alloc(alloc), _size(0), _capacity(0)
             {
-                std::cout << "constructeur (2)" << std::endl;
                 _vector = _alloc.allocate(n);
                 for (size_type i = 0; i < n; i++)
                      push_back(val);
