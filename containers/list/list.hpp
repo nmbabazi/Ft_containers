@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/03 13:57:08 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/03 16:30:48 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ namespace ft
             size_type       _size;
             ft::Allocator<Node> _alloc_node;
             
-///////////////////////constructeur//////////////////////////
+///////////////////////iterator//////////////////////////
         public:
 
             class ListIterator
@@ -73,6 +73,7 @@ namespace ft
                 ListIterator	operator++(int){ListIterator it = *this; ++(*this); return it;}
                 ListIterator	&operator--(){ _ptr = _ptr->prev; return *this;}
                 ListIterator	operator--(int){ListIterator it = *this; --(*this); return it;}
+                pointeur        get_ptr()const{return _ptr;}
 
                 bool			operator==(const ListIterator &it){ return _ptr == it._ptr;}
                 bool			operator!=(const ListIterator &it){ return _ptr != it._ptr;}
@@ -105,9 +106,74 @@ namespace ft
                 ConstListIterator	operator++(int){ConstListIterator it = *this; ++(*this); return it;}
                 ConstListIterator	&operator--(){ _ptr = _ptr->prev; return *this;}
                 ConstListIterator	operator--(int){ConstListIterator it = *this; --(*this); return it;}
-
+                pointeur            get_ptr()const{return _ptr;}
+                
                 bool			operator==(const ConstListIterator &it){ return _ptr == it._ptr;}
                 bool			operator!=(const ConstListIterator &it){ return _ptr != it._ptr;}
+                
+                private:
+                    pointeur _ptr; 
+            };
+
+            class ListRIterator
+            {
+                public:
+                typedef Node*                           pointeur;
+                typedef ptrdiff_t						difference_type;
+
+                ListRIterator(pointeur ptr = 0): _ptr(ptr){}
+                ListRIterator(ListRIterator const &cp){_ptr = cp._ptr;}
+                ListRIterator operator=(ListRIterator const &cp)
+                { 
+                    if (this != &cp)
+                        this->_ptr = cp._ptr;
+                    return *this;
+                }
+                ~ListRIterator(){}
+                
+                value_type		&operator*()const {return _ptr->data;}
+                pointeur        operator->()const{return _ptr;}
+                ListRIterator	&operator++(){_ptr = _ptr->prev; return *this;}
+                ListRIterator	operator++(int){ListRIterator it = *this; ++(*this); return it;}
+                ListRIterator	&operator--(){ _ptr = _ptr->next; return *this;}
+                ListRIterator	operator--(int){ListRIterator it = *this; --(*this); return it;}
+                pointeur        get_ptr()const{return _ptr;}
+
+                bool			operator==(const ListRIterator &it){ return _ptr == it._ptr;}
+                bool			operator!=(const ListRIterator &it){ return _ptr != it._ptr;}
+                
+                private:
+                    pointeur _ptr; 
+            };
+
+            class ConstListRIterator
+            {
+                public:
+                typedef Node*                           pointeur;
+                typedef const T&                        const_ref;
+                typedef const T*                        const_pointeur;
+                typedef ptrdiff_t						difference_type;
+
+                ConstListRIterator(pointeur ptr = 0): _ptr(ptr){}
+                ConstListRIterator(ConstListRIterator const &cp){_ptr = cp._ptr;}
+                ConstListRIterator operator=(ConstListRIterator const &cp)
+                { 
+                    if (this != &cp)
+                        this->_ptr = cp._ptr;
+                    return *this;
+                }
+                ~ConstListRIterator(){}
+                
+                const_ref		operator*()const {return _ptr->data;}
+                pointeur        operator->()const{return _ptr;}
+                ConstListRIterator	&operator++(){_ptr = _ptr->prev; return *this;}
+                ConstListRIterator	operator++(int){ConstListRIterator it = *this; ++(*this); return it;}
+                ConstListRIterator	&operator--(){ _ptr = _ptr->next; return *this;}
+                ConstListRIterator	operator--(int){ConstListRIterator it = *this; --(*this); return it;}
+                pointeur            get_ptr()const{return _ptr;}
+                
+                bool			operator==(const ConstListRIterator &it){ return _ptr == it._ptr;}
+                bool			operator!=(const ConstListRIterator &it){ return _ptr != it._ptr;}
                 
                 private:
                     pointeur _ptr; 
@@ -115,6 +181,8 @@ namespace ft
             
             typedef ListIterator        iterator;
             typedef ConstListIterator   c_iterator;
+            typedef ListRIterator        r_iterator;
+            typedef ConstListRIterator   cr_iterator;
 
             list (const allocator_type& alloc = allocator_type()):_alloc(alloc), _size(0){creatList();}
             list (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type()):_alloc(alloc), _size(0)
@@ -167,23 +235,33 @@ namespace ft
             c_iterator begin()const{return c_iterator(_list->next);}
             iterator end(){return iterator(_list);}
             c_iterator end()const{return c_iterator(_list);}
-            // r_iterator rbegin(){return r_iterator(_list + _size - 1);}
-            // cr_iterator rbegin()const {return cr_iterator(_list + _size - 1);}
-            // r_iterator rend(){return r_iterator(_list - 1);}
-            // cr_iterator rend()const{return cr_iterator(_list - 1);}
+            r_iterator rbegin(){return r_iterator(_list->prev);}
+            cr_iterator rbegin()const {return cr_iterator(_list->prev);}
+            r_iterator rend(){return r_iterator(_list);}
+            cr_iterator rend()const{return cr_iterator(_list);}
 /////////////////////capacity////////////////////////////////
-            bool empty() const;
+            bool empty() const{ return _size == 0;};
             size_type size() const{return _size;}
-            size_type max_size() const;
+            size_type max_size() const{return _alloc.max_size();};
 /////////////////////acces///////////////////////////////////
-            reference front();
-            const_reference front() const;
-            reference back();
-            const_reference back() const;
+            reference front(){return _list->next->data;}
+            const_reference front() const{return _list->next->data;}
+            reference back(){return _list->prev->data;}
+            const_reference back() const{return _list->prev->data;}
 /////////////////////modifiers///////////////////////////////
             template <class InputIterator>
-            void assign (InputIterator first, InputIterator last);
-            void assign (size_type n, const value_type& val);
+            void assign (typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last)
+            {
+                clear();
+                while (first != last)
+                    push_back(*first++);
+            }
+            void assign (size_type n, const value_type& val)
+            {
+                clear();
+                for(size_type i = 0; i < n; i++)
+                    push_back(val);
+            }
             void push_front (const value_type& val)
             {
                 Node *new_node = _alloc_node.allocate(1);
@@ -204,7 +282,18 @@ namespace ft
                 _list->prev = new_node;
                 _size++;
             }
-            void pop_front();
+            void pop_front()
+            {
+                if (_size)
+                {
+                    Node *to_delete = _list->next;
+                    _alloc.destroy(&to_delete->data);
+                    _list->next = to_delete->next;
+                    to_delete->next->prev=_list;
+                    _alloc_node.deallocate(to_delete, 1);
+                    _size--;
+                }
+            }
             void pop_back()
             {
                 if (_size)
@@ -217,14 +306,65 @@ namespace ft
                     _size--;
                 }
             }
-            iterator insert (iterator position, const value_type& val);	
-            void insert (iterator position, size_type n, const value_type& val);
+            iterator insert (iterator position, const value_type& val)
+            {
+                Node *pos = position.get_ptr();
+                Node *new_node = _alloc_node.allocate(1);
+                _alloc.construct(&new_node->data, val);
+                new_node->next = pos;
+                new_node->prev = pos->prev;
+                pos->prev->next = new_node;
+                pos->prev = new_node;
+                _size++;
+                return iterator(new_node);
+            }	
+            void insert (iterator position, size_type n, const value_type& val)
+            {
+                for (size_type i = 0; i < n; i++)
+                    position = insert(position, val);
+            }
             template <class InputIterator>
-            void insert (iterator position, InputIterator first, InputIterator last);
-            iterator erase (iterator position);
-            iterator erase (iterator first, iterator last);
-            void swap (list& x);
-            void resize (size_type n, value_type val = value_type());
+            void insert (iterator position, typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last)
+            {
+                while (first != last)
+                    position = insert(position, *first++);
+            }
+            iterator erase (iterator position)
+            {
+                Node *pos = position.get_ptr();
+                iterator ret = iterator(pos->next);
+                _alloc.destroy(&pos->data);
+                pos->prev->next = pos->next;
+                pos->next->prev = pos->prev;
+                _alloc_node.deallocate(pos, 1);
+                _size--;
+                return ret;
+            }
+            iterator erase (iterator first, iterator last)
+            {
+                iterator ret= first; 
+                while (first != last)
+                    ret = erase(first++);
+                return ret;
+            }
+            void swap (list& x)
+            {
+                ft::ft_swap(_size, x._size);
+				ft::ft_swap(_list, x._list);
+            }
+            void resize (size_type n, value_type val = value_type())
+            {
+                if (n > _size)
+                {
+                    while (n > _size)
+					    push_back(val);
+                }
+                else if (n < _size)
+                {
+                    while (n < _size)
+					    pop_back();
+                }
+            }
             void clear()
             {
                 while (_size)
@@ -249,13 +389,54 @@ namespace ft
             void reverse();
 
 /////////////////////overload///////////////////////////////
-            friend bool operator== (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs);	
-            friend bool operator!= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs);
-            friend bool operator<  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs);
-            friend bool operator<= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs);	
-            friend bool operator>  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs);
-            friend bool operator>= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs);
-            friend void swap (list<T,Alloc>& x, list<T,Alloc>& y);
+        friend bool operator==(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+        {
+            if (lhs._size != rhs._size)
+                return false;
+            c_iterator lit = lhs.begin();
+            c_iterator rit = rhs.begin();
+            while (lit != lhs.end())
+            {
+                if (*lit++ != *rit++)
+                    return false;
+            }
+            return true;
+        }
+        friend bool operator!= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs){ return !(lhs == rhs);}
+        friend bool operator<  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+        {	
+            c_iterator lit = lhs.begin();
+		    c_iterator rit = rhs.begin();
+		    while (lit != lhs.end())
+		    {
+			    if (rit == rhs.end() || *rit < *lit)
+				    return false;
+			    else if (*lit < *rit)
+				    return true;
+			    ++lit;
+			    ++rit;
+		    }
+		    return rit != rhs.end();
+        }
+        friend bool operator<= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+        { 
+            if (lhs == rhs || lhs < rhs)
+                return true;
+            return false;
+        }
+		friend bool operator>  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+        { 
+            if (!(lhs == rhs) && !(lhs < rhs)) 
+                return true;
+            return false;
+        }
+		friend bool operator>= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+        { 
+            if (lhs == rhs || lhs > rhs)
+                return true;
+            return false;
+        }	
+        friend void swap (list& x, list& y) { x.swap(y); }
     };
 
 }
