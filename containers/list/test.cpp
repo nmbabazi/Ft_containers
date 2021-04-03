@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/03 16:31:46 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/03 17:38:42 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 #include <list>
 #include <vector>
 #include <iostream>
-#include <iterator>
 
+/*******************************************************************************/
+/**basic test provided on cplusplus.com. STL outputs are copied from the site**/
+/*******************************************************************************/
 
 int main ()
 {
@@ -197,6 +199,7 @@ int main ()
 		ft::list<int> b = a;
 		ft::list<int> c(a.rbegin(), a.rend());
 
+		std::cout << "ft output:\n";
 		if (a==b) std::cout << "a and b are equal\n";
 		if (b!=c) std::cout << "b and c are not equal\n";
 		if (b<c) std::cout << "b is less than c\n";
@@ -204,13 +207,34 @@ int main ()
 		if (a<=b) std::cout << "a is less than or equal to b\n";
 		if (a>=b) std::cout << "a is greater than or equal to b\n";
 		
-		std::cout << "STL output \n";
-		std::cout << "a and b are equal\n";
+		std::cout << "-----------------------------" << std::endl;
+        std::cout << "stl output:\n";
+        std::cout << "a and b are equal\n";
 		std::cout << "b and c are not equal\n";
 		std::cout << "b is less than c\n";
 		std::cout << "c is greater than b\n";
 		std::cout << "a is less than or equal to b\n";
 		std::cout << "a is greater than or equal to b\n";
 	}
+	std::cout << "\n\n ***************Test swap overload ***********\n\n";
+    {
+        unsigned int i;
+        ft::list<int> foo (3,100);   // three ints with a value of 100
+        ft::list<int> bar (5,200);   // five ints with a value of 200
+
+        foo.swap(bar);
+
+        std::cout << "foo contains(ft):";
+        for (ft::list<int>::iterator it = foo.begin(); it!=foo.end(); ++it)
+            std::cout << ' ' << *it;
+        std::cout << '\n';
+        std::cout << "foo contains(stl): 200 200 200 200 200\n";
+
+        std::cout << "bar contains(ft):";
+        for (ft::list<int>::iterator it = bar.begin(); it!=bar.end(); ++it)
+            std::cout << ' ' << *it;
+        std::cout << '\n';
+        std::cout << "bar contains(stl): 100 100 100\n";
+    }
   return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/02 14:01:14 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/03 17:08:24 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,11 +168,9 @@ namespace ft
             }
             void assign (size_type n, const value_type& val)
             {
-                std::cout << "valeur de n = " << n << std::endl; 
                 for (size_type i = 0; i < _size; i++)
                     _alloc.destroy(_vector + i);
                 _size = 0;
-                std::cout << "valeur de n = " << n << std::endl; 
                 for (size_type i = 0; i < n; i++)
                     push_back(val);
             }
