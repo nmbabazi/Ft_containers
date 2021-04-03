@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/03 17:36:04 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/03 17:41:54 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <iostream>
 
 /*******************************************************************************/
-/**basic test provided on cplusplus.com. STL outputs are copied from the site**/
+/**Basic test provided on cplusplus.com. STL outputs are copied from the site.**/
 /*******************************************************************************/
 
 int main ()

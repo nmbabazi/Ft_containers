@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/03 17:38:42 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/03 17:56:40 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <iostream>
 
 /*******************************************************************************/
-/**basic test provided on cplusplus.com. STL outputs are copied from the site**/
+/**Basic test provided on cplusplus.com. STL outputs are copied from the site.**/
 /*******************************************************************************/
 
 int main ()
@@ -53,8 +53,19 @@ int main ()
 		std::cout << "Size of second(std): 3" << '\n';
 
     }
-	std::cout << "\n\n ***************Test empty***********\n\n";
+	std::cout << "\n\n ***************Test reverse it***********\n\n";
     {
+		ft::list<int> mylist;
+		for (int i=1; i<=5; ++i) mylist.push_back(i);
+
+		std::cout << "mylist backwards(ft):";
+		for (ft::list<int>::r_iterator rit=mylist.rbegin(); rit!=mylist.rend(); ++rit)
+			std::cout << ' ' << *rit;
+		std::cout << '\n';
+		std::cout << "mylist backwards(std): 5 4 3 2 1\n";
+    }
+	std::cout << "\n\n ***************Test empty***********\n\n";
+    {	
 		ft::list<int> mylist;
 		int sum (0);
 
@@ -66,19 +77,98 @@ int main ()
 			mylist.pop_front();
 		}
 		std::cout << "total(ft): " << sum << '\n';
-		std::cout << "total(std): 55 \n";
+		std::cout << "total(std): 55 \n";	
+    }
+	std::cout << "\n\n ***************Test size***********\n\n";
+    {
+		{std::cout << "ft:" << std::endl;
+		  	ft::list<int> myints;
+			std::cout << "0. size: " << myints.size() << '\n';
+
+			for (int i=0; i<10; i++) myints.push_back(i);
+			std::cout << "1. size: " << myints.size() << '\n';
+
+			myints.insert (myints.begin(),10,100);
+			std::cout << "2. size: " << myints.size() << '\n';
+
+			myints.pop_back();
+			std::cout << "3. size: " << myints.size() << '\n';}
+
+        std::cout << "-----------------------------" << std::endl;
+        {std::cout << "stl :" << std::endl;
+		  	std::list<int> myints;
+			std::cout << "0. size: " << myints.size() << '\n';
+
+			for (int i=0; i<10; i++) myints.push_back(i);
+			std::cout << "1. size: " << myints.size() << '\n';
+
+			myints.insert (myints.begin(),10,100);
+			std::cout << "2. size: " << myints.size() << '\n';
+
+			myints.pop_back();
+			std::cout << "3. size: " << myints.size() << '\n';}
 		
     }
-	std::cout << "\n\n ***************Test reverse it***********\n\n";
+	std::cout << "\n\n ***************Test max_size***********\n\n";
     {
-		ft::list<int> mylist;
-		for (int i=1; i<=5; ++i) mylist.push_back(i);
+		
+    }
+	std::cout << "\n\n ***************Test front***********\n\n";
+    {
+		{
+		  	ft::list<int> mylist;
+			mylist.push_back(77);
+			mylist.push_back(22);
 
-		std::cout << "mylist backwards(ft):";
-		for (ft::list<int>::r_iterator rit=mylist.rbegin(); rit!=mylist.rend(); ++rit)
-			std::cout << ' ' << *rit;
-		std::cout << '\n';
-		std::cout << "mylist backwards(std): 5 4 3 2 1\n";
+			// now front equals 77, and back 22
+
+			mylist.front() -= mylist.back();
+
+			std::cout << "mylist.front() is now(ft) " << mylist.front() << '\n';}
+        {
+		  	std::list<int> mylist;
+
+			mylist.push_back(77);
+			mylist.push_back(22);
+
+			// now front equals 77, and back 22
+
+			mylist.front() -= mylist.back();
+
+			std::cout << "mylist.front() is now(std) " << mylist.front() << '\n';}
+		
+    }
+	std::cout << "\n\n ***************Test back***********\n\n";
+    {
+		{  ft::list<int> mylist;
+
+			mylist.push_back(10);
+
+			while (mylist.back() != 0)
+			{
+				mylist.push_back ( mylist.back() -1 );
+			}
+
+			std::cout << "mylist contains(ft):";
+			for (ft::list<int>::iterator it=mylist.begin(); it!=mylist.end() ; ++it)
+				std::cout << ' ' << *it;
+
+			std::cout << '\n';}
+        {  std::list<int> mylist;
+
+			mylist.push_back(10);
+
+			while (mylist.back() != 0)
+			{
+				mylist.push_back ( mylist.back() -1 );
+			}
+
+			std::cout << "mylist contains(stl):";
+			for (std::list<int>::iterator it=mylist.begin(); it!=mylist.end() ; ++it)
+				std::cout << ' ' << *it;
+
+			std::cout << '\n';}
+		
     }
 	std::cout << "\n\n ***************Test assign***********\n\n";
     {
@@ -96,6 +186,22 @@ int main ()
 		std::cout << "Size of first(std): 3\n";
 		std::cout << "Size of second(ft): " << int (second.size()) << '\n';
 		std::cout << "Size of second(std): 7\n";
+    }
+	std::cout << "\n\n ***************Test push_front***********\n\n";
+    {
+		
+    }
+	std::cout << "\n\n ***************Test pop_front***********\n\n";
+    {
+		
+    }
+	std::cout << "\n\n ***************Test push_back***********\n\n";
+    {
+		
+    }
+	std::cout << "\n\n ***************Test pop_back***********\n\n";
+    {
+		
     }
 	std::cout << "\n\n ***************Test insert**********\n\n";
     {
@@ -192,6 +298,10 @@ int main ()
 		std::cout << '\n';
 		std::cout << "mylist contains(std): 1 2 3 4 5 100 100 100 0 0 0 0\n";
 	}
+	std::cout << "\n\n ***************Test clear***********\n\n";
+    {
+		
+    }
 	std::cout << "\n\n ***************Test relational operators***********\n\n";
     {
 		int myints[] = {10, 20, 30};
