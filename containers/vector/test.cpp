@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/03 17:41:54 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/04 09:59:36 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int main ()
         myvector.resize(5);
         myvector.resize(8,100);
         myvector.resize(12);
-
         std::cout << "myvector contains(ft):";
         for (int i=0;i<myvector.size();i++)
             std::cout << ' ' << myvector[i];
@@ -118,17 +117,22 @@ int main ()
     }
     std::cout << "\n\n ***************Test capacity***********\n\n";
     {
-        ft::vector<int> myvector;
+        {ft::vector<int> myvector;
 
         // set some content in the vector:
         for (int i=0; i<100; i++) myvector.push_back(i);
 
         std::cout << "size(ft): " << (int) myvector.size() << '\n';
-        std::cout << "size(stl): 100" << '\n';
         std::cout << "capacity(ft): " << (int) myvector.capacity() << '\n';
-        std::cout << "capacity(stl): 128" << '\n';
-        std::cout << "max_size(ft): " << (int) myvector.max_size() << '\n';
-        std::cout << "max_size(stl): 1073741823" << '\n';
+        std::cout << "max_size(ft): " << (int) myvector.max_size() << '\n';}
+        {std::vector<int> myvector;
+        std::cout << "-----------------------------" << std::endl;
+        // set some content in the vector:
+        for (int i=0; i<100; i++) myvector.push_back(i);
+
+        std::cout << "size(stl): " << (int) myvector.size() << '\n';
+        std::cout << "capacity(stl): " << (int) myvector.capacity() << '\n';
+        std::cout << "max_size(stl): " << (int) myvector.max_size() << '\n';}
     }
     std::cout << "\n\n ***************Test empty ***********\n\n";
     {

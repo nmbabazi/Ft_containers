@@ -6,18 +6,49 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/03 17:56:40 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/04 16:22:51 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.hpp"
 #include <list>
+#include <cmath>
 #include <vector>
 #include <iostream>
 
 /*******************************************************************************/
 /**Basic test provided on cplusplus.com. STL outputs are copied from the site.**/
 /*******************************************************************************/
+
+// a predicate implemented as a function:
+bool single_digit (const int& value) { return (value<10); }
+
+// a predicate implemented as a class:
+struct is_odd {
+  bool operator() (const int& value) { return (value%2)==1; }
+};
+
+// a binary predicate implemented as a function:
+bool same_integral_part (double first, double second)
+{ return ( int(first)==int(second) ); }
+
+// a binary predicate implemented as a class:
+struct is_near {
+  bool operator() (double first, double second)
+  { return (fabs(first-second)<5.0); }
+};
+
+bool compare_nocase (const std::string& first, const std::string& second)
+{
+  unsigned int i=0;
+  while ( (i<first.length()) && (i<second.length()) )
+  {
+    if (tolower(first[i])<tolower(second[i])) return true;
+    else if (tolower(first[i])>tolower(second[i])) return false;
+    ++i;
+  }
+  return ( first.length() < second.length() );
+}
 
 int main ()
 {
@@ -300,6 +331,125 @@ int main ()
 	}
 	std::cout << "\n\n ***************Test clear***********\n\n";
     {
+		
+    }
+	std::cout << "\n\n ***************Test splice***********\n\n";
+    {
+		ft::list<int> mylist1, mylist2;
+		ft::list<int>::iterator it;
+
+		// set some initial values:
+		for (int i=1; i<=4; ++i)
+			mylist1.push_back(i);      // mylist1: 1 2 3 4
+
+		for (int i=1; i<=3; ++i)
+			mylist2.push_back(i*10);   // mylist2: 10 20 30
+
+		it = mylist1.begin();
+		++it;                         // points to 2
+
+		mylist1.splice (it, mylist2); // mylist1: 1 10 20 30 2 3 4
+										// mylist2 (empty)
+										// "it" still points to 2 (the 5th element)
+												
+		mylist2.splice (mylist2.begin(),mylist1, it);
+										// mylist1: 1 10 20 30 3 4
+										// mylist2: 2
+										// "it" is now invalid.
+		it = mylist1.begin();
+		it++;it++;it++;           		// "it" points now to 30
+
+		mylist1.splice ( mylist1.begin(), mylist1, it, mylist1.end());
+										// mylist1: 30 3 4 1 10 20
+
+		std::cout << "mylist1 contains(ft):";
+		for (it=mylist1.begin(); it!=mylist1.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "mylist1 contains(stl): 30 3 4 1 10 20\n";
+		
+		std::cout << "mylist2 contains(ft):";
+		for (it=mylist2.begin(); it!=mylist2.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "mylist2 contains(stl): 2\n";
+    }
+	std::cout << "\n\n ***************Test remove***********\n\n";
+    {
+		int myints[]= {17,89,7,14};
+		ft::list<int> mylist (myints,myints+4);
+
+		mylist.remove(89);
+
+		std::cout << "mylist contains(ft):";
+		for (ft::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "mylist contains(stl): 17 7 14\n";
+    }
+	std::cout << "\n\n ***************Test remove if***********\n\n";
+    {
+		int myints[]= {15,36,7,17,20,39,4,1};
+		ft::list<int> mylist (myints,myints+8);   // 15 36 7 17 20 39 4 1
+
+		mylist.remove_if (single_digit);           // 15 36 17 20 39
+
+		mylist.remove_if (is_odd());               // 36 20
+
+		std::cout << "mylist contains(ft):";
+		for (ft::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "mylist contains(ft): 36 20\n";
+    }
+	std::cout << "\n\n ***************Test unique***********\n\n";
+    {
+		double mydoubles[]={ 12.15,  2.72, 73.0,  12.77,  3.14,
+							12.77, 73.35, 72.25, 15.3,  72.25 };
+		ft::list<double> mylist (mydoubles,mydoubles+10);
+		
+		// mylist.sort();             //  2.72,  3.14, 12.15, 12.77, 12.77,
+		// 							// 15.3,  72.25, 72.25, 73.0,  73.35
+
+		mylist.unique();           //  2.72,  3.14, 12.15, 12.77
+									// 15.3,  72.25, 73.0,  73.35
+
+		mylist.unique (same_integral_part);  //  2.72,  3.14, 12.15
+											// 15.3,  72.25, 73.0
+
+		mylist.unique (is_near());           //  2.72, 12.15, 72.25
+
+		std::cout << "mylist contains(ft):";
+		for (ft::list<double>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "mylist contains(stl-not sorted): 12.15 2.72 73 12.77 3.14 12.77 73.35 15.3 72.25\n";
+		//std::cout << "mylist contains(stl-sorted): 2.72 12.15 72.25\n";
+    }
+	std::cout << "\n\n ***************Test sort***********\n\n";
+    {
+		// ft::list<std::string> mylist;
+		// ft::list<std::string>::iterator it;
+		// mylist.push_back ("one");
+		// mylist.push_back ("two");
+		// mylist.push_back ("Three");
+
+		// mylist.sort();
+
+		// mylist.sort(compare_nocase);
+
+		// std::cout << "mylist contains(ft):";
+		// for (it=mylist.begin(); it!=mylist.end(); ++it)
+		// 	std::cout << ' ' << *it;
+		// std::cout << '\n';
+		// std::cout << "mylist contains(stl): one Three two\n";
+		int mydoubles[]={ 3, 5, 9, 4, 2, 6};
+		ft::list<int> mylist (mydoubles,mydoubles+6);
+		mylist.sort();
+		std::cout << "mylist contains(ft):";
+		for (ft::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
 		
     }
 	std::cout << "\n\n ***************Test relational operators***********\n\n";
