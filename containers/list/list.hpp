@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/05 14:22:00 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/05 16:13:03 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <memory>
 #include <iostream>
 #include <limits>
-#include "iterator.hpp"
 #include "../../allocator.hpp"
 #include "../../utils.hpp"
 
@@ -180,9 +179,9 @@ namespace ft
             };
             
             typedef ListIterator        iterator;
-            typedef ConstListIterator   c_iterator;
-            typedef ListRIterator        r_iterator;
-            typedef ConstListRIterator   cr_iterator;
+            typedef ConstListIterator   const_iterator;
+            typedef ListRIterator        reverse_iterator;
+            typedef ConstListRIterator   const_reverse_iterator;
 
             list (const allocator_type& alloc = allocator_type()):_alloc(alloc), _size(0){creatList();}
             list (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type()):_alloc(alloc), _size(0)
@@ -204,8 +203,8 @@ namespace ft
             list (const list& x):_size(0)
             {
                 creatList();
-                c_iterator it = x.begin();
-                c_iterator rit = x.end();
+                const_iterator it = x.begin();
+                const_iterator rit = x.end();
                 while (it != rit)
                     push_back(*it++);
             }
@@ -218,7 +217,7 @@ namespace ft
                 if (_list != NULL)
                     clear();
                 creatList();
-                for(c_iterator start = x.begin(); start != x.end(); start++)
+                for(const_iterator start = x.begin(); start != x.end(); start++)
                     push_back(*start);
                 return *this;
             }
@@ -232,13 +231,13 @@ namespace ft
             }
 ///////////////////////iterator//////////////////////////////
             iterator begin(){return iterator(_list->next);}
-            c_iterator begin()const{return c_iterator(_list->next);}
+            const_iterator begin()const{return const_iterator(_list->next);}
             iterator end(){return iterator(_list);}
-            c_iterator end()const{return c_iterator(_list);}
-            r_iterator rbegin(){return r_iterator(_list->prev);}
-            cr_iterator rbegin()const {return cr_iterator(_list->prev);}
-            r_iterator rend(){return r_iterator(_list);}
-            cr_iterator rend()const{return cr_iterator(_list);}
+            const_iterator end()const{return const_iterator(_list);}
+            reverse_iterator rbegin(){return reverse_iterator(_list->prev);}
+            const_reverse_iterator rbegin()const {return const_reverse_iterator(_list->prev);}
+            reverse_iterator rend(){return reverse_iterator(_list);}
+            const_reverse_iterator rend()const{return const_reverse_iterator(_list);}
 /////////////////////capacity////////////////////////////////
             bool empty() const{ return _size == 0;};
             size_type size() const{return _size;}
@@ -520,8 +519,8 @@ namespace ft
         {
             if (lhs._size != rhs._size)
                 return false;
-            c_iterator lit = lhs.begin();
-            c_iterator rit = rhs.begin();
+            const_iterator lit = lhs.begin();
+            const_iterator rit = rhs.begin();
             while (lit != lhs.end())
             {
                 if (*lit++ != *rit++)
@@ -532,8 +531,8 @@ namespace ft
         friend bool operator!= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs){ return !(lhs == rhs);}
         friend bool operator<  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
         {	
-            c_iterator lit = lhs.begin();
-		    c_iterator rit = rhs.begin();
+            const_iterator lit = lhs.begin();
+		    const_iterator rit = rhs.begin();
 		    while (lit != lhs.end())
 		    {
 			    if (rit == rhs.end() || *rit < *lit)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   iterator.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/03/30 11:47:46 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/05 16:50:36 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ namespace ft
         typedef ptrdiff_t				difference_type;
 
         VectIterator(value_type *ptr = 0): _ptr(ptr){}
-        VectIterator(VectIterator<T> const &cp){_ptr = cp._ptr;}
+        VectIterator(VectIterator<T> const &cp){_ptr = cp.get_ptr();}
         VectIterator operator=(VectIterator const &cp)
         { 
             if (this != &cp)
-                this->_ptr = cp._ptr;
+                this->_ptr = cp.get_ptr();
             return *this;
         }
         ~VectIterator(){}
@@ -48,7 +48,7 @@ namespace ft
             else 
                 while (n++) ++_ptr;
             return *this;}
-        difference_type	operator-(VectIterator const &it)const{ return (it._ptr - this->_ptr);}
+        difference_type	operator-(VectIterator const &it)const{ return (it.get_ptr() - this->_ptr);}
         
         value_type		&operator*()const {return *_ptr;}
         value_type		*operator->()const{return _ptr;}
@@ -57,13 +57,14 @@ namespace ft
         VectIterator	operator++(int){VectIterator it = *this; ++(*this); return it;}
         VectIterator	&operator--(){ _ptr--; return *this;}
         VectIterator	operator--(int){VectIterator it = *this; --(*this); return it;}
+        value_type      *get_ptr()const{return _ptr;}
 
-        bool			operator==(const VectIterator &it){ return _ptr == it._ptr;}
-        bool			operator!=(const VectIterator &it){ return _ptr != it._ptr;}
-        bool			operator>=(const VectIterator &it){ return _ptr >= it._ptr;}
-        bool			operator<=(const VectIterator &it){ return _ptr <= it._ptr;}
-        bool			operator>(const VectIterator &it){ return _ptr > it._ptr;}
-        bool			operator<(const VectIterator &it){ return _ptr < it._ptr;}
+        bool			operator==(const VectIterator &it){ return _ptr == it.get_ptr();}
+        bool			operator!=(const VectIterator &it){ return _ptr != it.get_ptr();}
+        bool			operator>=(const VectIterator &it){ return _ptr >= it.get_ptr();}
+        bool			operator<=(const VectIterator &it){ return _ptr <= it.get_ptr();}
+        bool			operator>(const VectIterator &it){ return _ptr > it.get_ptr();}
+        bool			operator<(const VectIterator &it){ return _ptr < it.get_ptr();}
         
         private:
             value_type *_ptr; 
@@ -80,11 +81,11 @@ namespace ft
         typedef ptrdiff_t						difference_type;
 
         ConstVectIterator(pointeur ptr = 0): _ptr(ptr){}
-        ConstVectIterator(ConstVectIterator<T> const &cp){ _ptr = cp._ptr;}
+        ConstVectIterator(VectIterator<T> const &cp){ _ptr = cp.get_ptr();}
         ConstVectIterator operator=(ConstVectIterator const &cp)
         { 
             if (this != &cp)
-                this->_ptr = cp._ptr;
+                this->_ptr = cp.get_ptr();
             return *this;
         }
         ~ConstVectIterator(){}
@@ -103,7 +104,7 @@ namespace ft
             else 
                 while (n++) ++_ptr;
             return *this;}
-        difference_type	operator-(ConstVectIterator const &it)const{ return (it._ptr - this->_ptr);}
+        difference_type	operator-(ConstVectIterator const &it)const{ return (it.get_ptr() - this->_ptr);}
         
         const_reference operator*()const {return *_ptr;}
         pointeur		*operator->()const{return _ptr;}
@@ -112,13 +113,14 @@ namespace ft
         ConstVectIterator	operator++(int){ConstVectIterator it = *this; ++(*this); return it;}
         ConstVectIterator	&operator--(){ _ptr--; return *this;}
         ConstVectIterator	operator--(int){ConstVectIterator it = *this; --(*this); return it;}
+        pointeur             get_ptr()const{return _ptr;}
 
-        bool			operator==(const ConstVectIterator&it){ return _ptr == it._ptr;}
-        bool			operator!=(const ConstVectIterator &it){ return _ptr != it._ptr;}
-        bool			operator>=(const ConstVectIterator &it){ return _ptr >= it._ptr;}
-        bool			operator<=(const ConstVectIterator &it){ return _ptr <= it._ptr;}
-        bool			operator>(const ConstVectIterator &it){ return _ptr > it._ptr;}
-        bool			operator<(const ConstVectIterator &it){ return _ptr < it._ptr;}
+        bool			operator==(const ConstVectIterator&it){ return _ptr == it.get_ptr();}
+        bool			operator!=(const ConstVectIterator &it){ return _ptr != it.get_ptr();}
+        bool			operator>=(const ConstVectIterator &it){ return _ptr >= it.get_ptr();}
+        bool			operator<=(const ConstVectIterator &it){ return _ptr <= it.get_ptr();}
+        bool			operator>(const ConstVectIterator &it){ return _ptr > it.get_ptr();}
+        bool			operator<(const ConstVectIterator &it){ return _ptr < it.get_ptr();}
         
         private:
             pointeur _ptr; 
@@ -134,10 +136,10 @@ namespace ft
         typedef ptrdiff_t						difference_type;
 
         VectRIterator(value_type *ptr = 0): _ptr(ptr){}
-        VectRIterator(VectRIterator<T> const &cp){ _ptr = cp._ptr;}
+        VectRIterator(VectRIterator<T> const &cp){ _ptr = cp.get_ptr();}
         VectRIterator operator=(VectRIterator const &cp)
         { if (this != &cp)
-                this->_ptr = cp._ptr;
+                this->_ptr = cp.get_ptr();
             return *this;}
         ~VectRIterator(){}
 
@@ -155,7 +157,7 @@ namespace ft
             else 
                 while (n++) --_ptr;
             return *this;}
-        difference_type	operator-(VectRIterator const &it)const{ return (this->_ptr - it._ptr);}
+        difference_type	operator-(VectRIterator const &it)const{ return (this->_ptr - it.get_ptr());}
         
         value_type		&operator*()const{return *_ptr;}
         value_type		*operator->()const{return _ptr;}
@@ -164,13 +166,14 @@ namespace ft
         VectRIterator	operator++(int){VectRIterator it = *this; ++(*this); return it;}
         VectRIterator	&operator--(){ _ptr++; return *this;}
         VectRIterator	operator--(int){VectRIterator it = *this; --(*this); return it;}
+        value_type      *get_ptr()const{return _ptr;}
 
-        bool			operator==(const VectRIterator &it){ return _ptr == it._ptr;}
-        bool			operator!=(const VectRIterator &it){ return _ptr != it._ptr;}
-        bool			operator>=(const VectRIterator &it){ return _ptr >= it._ptr;}
-        bool			operator<=(const VectRIterator &it){ return _ptr <= it._ptr;}
-        bool			operator>(const VectRIterator &it){ return _ptr > it._ptr;}
-        bool			operator<(const VectRIterator &it){ return _ptr < it._ptr;}
+        bool			operator==(const VectRIterator &it){ return _ptr == it.get_ptr();}
+        bool			operator!=(const VectRIterator &it){ return _ptr != it.get_ptr();}
+        bool			operator>=(const VectRIterator &it){ return _ptr >= it.get_ptr();}
+        bool			operator<=(const VectRIterator &it){ return _ptr <= it.get_ptr();}
+        bool			operator>(const VectRIterator &it){ return _ptr > it.get_ptr();}
+        bool			operator<(const VectRIterator &it){ return _ptr < it.get_ptr();}
         
         private:
             value_type *_ptr;
@@ -188,10 +191,10 @@ namespace ft
         typedef ptrdiff_t						difference_type;
 
         ConstVectRIterator(pointeur ptr = 0): _ptr(ptr){}
-        ConstVectRIterator(ConstVectRIterator<T> const &cp){ _ptr = cp._ptr;}
+        ConstVectRIterator(VectRIterator<T> const &cp){ _ptr = cp.get_ptr();}
         ConstVectRIterator operator=(ConstVectRIterator const &cp)
         { if (this != &cp)
-                this->_ptr = cp._ptr;
+                this->_ptr = cp.get_ptr();
             return *this;}
         ~ConstVectRIterator(){}
 
@@ -209,7 +212,7 @@ namespace ft
             else 
                 while (n++) --_ptr;
             return *this;}
-        difference_type	operator-(ConstVectRIterator const &it)const{ return (this->_ptr - it._ptr);}
+        difference_type	operator-(ConstVectRIterator const &it)const{ return (this->_ptr - it.get_ptr());}
         
         const_reference operator*()const{return *_ptr;}
         const_pointer   operator->()const{return _ptr;}
@@ -218,13 +221,14 @@ namespace ft
         ConstVectRIterator	operator++(int){ConstVectRIterator it = *this; ++(*this); return it;}
         ConstVectRIterator	&operator--(){ _ptr++; return *this;}
         ConstVectRIterator	operator--(int){ConstVectRIterator it = *this; --(*this); return it;}
+        pointeur            get_ptr()const{return _ptr;}
 
-        bool			operator==(const ConstVectRIterator &it){ return _ptr == it._ptr;}
-        bool			operator!=(const ConstVectRIterator &it){ return _ptr != it._ptr;}
-        bool			operator>=(const ConstVectRIterator &it){ return _ptr >= it._ptr;}
-        bool			operator<=(const ConstVectRIterator &it){ return _ptr <= it._ptr;}
-        bool			operator>(const ConstVectRIterator &it){ return _ptr > it._ptr;}
-        bool			operator<(const ConstVectRIterator &it){ return _ptr < it._ptr;}
+        bool			operator==(const ConstVectRIterator &it){ return _ptr == it.get_ptr();}
+        bool			operator!=(const ConstVectRIterator &it){ return _ptr != it.get_ptr();}
+        bool			operator>=(const ConstVectRIterator &it){ return _ptr >= it.get_ptr();}
+        bool			operator<=(const ConstVectRIterator &it){ return _ptr <= it.get_ptr();}
+        bool			operator>(const ConstVectRIterator &it){ return _ptr > it.get_ptr();}
+        bool			operator<(const ConstVectRIterator &it){ return _ptr < it.get_ptr();}
         
         private:
             pointeur _ptr;

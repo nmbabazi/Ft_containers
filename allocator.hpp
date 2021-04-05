@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 11:20:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/05 14:34:12 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/05 16:02:39 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ namespace ft
     		typedef size_t				size_type;
             
             Allocator() throw(){}
-            Allocator (const Allocator& alloc) throw(){}
+            Allocator (const Allocator& alloc) throw(){(void)alloc;}
             template <class U>
-            Allocator (const Allocator<U>& alloc) throw(){}
+            Allocator (const Allocator<U>& alloc) throw(){(void)alloc;}
             ~Allocator () throw(){}
 
             pointer address(reference x ) const{ return &x;}

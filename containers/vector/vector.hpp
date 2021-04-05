@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/03 17:08:24 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/05 17:42:05 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ namespace ft
     		typedef size_t				    size_type;
 			typedef Alloc				    allocator_type;
         	typedef VectIterator<T>         iterator;
-    		typedef VectRIterator<T>        r_iterator;
-        	typedef ConstVectIterator<T>    c_iterator;
-    		typedef ConstVectRIterator<T>   cr_iterator;
+    		typedef VectRIterator<T>        reverse_iterator;
+        	typedef ConstVectIterator<T>    const_iterator;
+    		typedef ConstVectRIterator<T>   const_reverse_iterator;
             
         private:
             allocator_type  _alloc;
@@ -81,19 +81,19 @@ namespace ft
                     clear();
                 if (_capacity < x._capacity)
                     reserve(x._capacity);
-                for(c_iterator start = x.begin(); start != x.end(); start++)
+                for(const_iterator start = x.begin(); start != x.end(); start++)
                     push_back(*start);
                 return *this;
             }
 ///////////////////////iterator//////////////////////////////
             iterator begin(){return iterator(_vector);}
-            c_iterator begin()const {return c_iterator(_vector);}
+            const_iterator begin()const {return const_iterator(_vector);}
             iterator end(){return iterator(_vector + _size);}
-            c_iterator end()const{return c_iterator(_vector + _size);}
-            r_iterator rbegin(){return r_iterator(_vector + _size - 1);}
-            cr_iterator rbegin()const {return cr_iterator(_vector + _size - 1);}
-            r_iterator rend(){return r_iterator(_vector - 1);}
-            cr_iterator rend()const{return cr_iterator(_vector - 1);}
+            const_iterator end()const{return const_iterator(_vector + _size);}
+            reverse_iterator rbegin(){return reverse_iterator(_vector + _size - 1);}
+            const_reverse_iterator rbegin()const {return const_reverse_iterator(_vector + _size - 1);}
+            reverse_iterator rend(){return reverse_iterator(_vector - 1);}
+            const_reverse_iterator rend()const{return const_reverse_iterator(_vector - 1);}
 /////////////////////capacity////////////////////////////////
             size_type size()const{return _size;}
             size_type max_size()const{return _alloc.max_size();};
@@ -131,6 +131,7 @@ namespace ft
                     _capacity = n;
                     _vector = temp;
                 }
+                std::cout << "size reserve=" << _size << std::endl;
             }
 /////////////////////acces///////////////////////////////////
             reference front(){return _vector[0];}
@@ -157,9 +158,9 @@ namespace ft
             template <class InputIterator>
             void assign (typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last)
             {
-                for (size_type i = 0; i < _size; i++)
-                    _alloc.destroy(_vector + i);
-                _size = 0;
+                // for (size_type i = 0; i < _size; i++)
+                //     _alloc.destroy(_vector + i);
+                clear();
                 while(first != last)
                 {
                     push_back(*first);
@@ -168,14 +169,15 @@ namespace ft
             }
             void assign (size_type n, const value_type& val)
             {
-                for (size_type i = 0; i < _size; i++)
-                    _alloc.destroy(_vector + i);
-                _size = 0;
+                // for (size_type i = 0; i < _size; i++)
+                //     _alloc.destroy(_vector + i);
+                clear();
                 for (size_type i = 0; i < n; i++)
                     push_back(val);
             }
             void push_back (const value_type& val)
             {
+                std::cout << "size avant = " << _size << std::endl;
                 if (_size == _capacity)
                 {
                     if (_capacity == 0)
@@ -183,8 +185,10 @@ namespace ft
                     else
                         reserve(_capacity * 2);
                 }
-                _vector[_size] = val;
+                _alloc.construct(&_vector[_size], val);
+                //_vector[_size] = val;
                 _size++;
+                std::cout << "size apres = " << _size << std::endl;
             }
             void pop_back()
             {
@@ -290,8 +294,8 @@ namespace ft
         friend bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs ) { return !(lhs == rhs);}
         friend bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
         {	
-            c_iterator lit = lhs.begin();
-		    c_iterator rit = rhs.begin();
+            const_iterator lit = lhs.begin();
+		    const_iterator rit = rhs.begin();
 
 		    while (lit != lhs.end())
 		    {
