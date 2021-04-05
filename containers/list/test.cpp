@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/05 14:10:04 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/05 14:33:33 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,17 @@ int main ()
     }
 	std::cout << "\n\n ***************Test max_size***********\n\n";
     {
-		
+		{unsigned int i;
+		ft::list<int> mylist;
+
+		for (int i=0; i<100; i++) mylist.push_back(i);
+		std::cout << "max_sizeft(ft): " << (int) mylist.max_size() << '\n';}
+        std::cout << "-----------------------------" << std::endl;
+		{unsigned int i;
+		std::list<int> mylist;
+
+		for (int i=0; i<100; i++) mylist.push_back(i);
+		std::cout << "max_sizeft(stl): " << (int) mylist.max_size() << '\n';}
     }
 	std::cout << "\n\n ***************Test front***********\n\n";
     {
@@ -224,19 +234,63 @@ int main ()
     }
 	std::cout << "\n\n ***************Test push_front***********\n\n";
     {
-		
+		ft::list<int> mylist (2,100);         // two ints with a value of 100
+		mylist.push_front (200);
+		mylist.push_front (300);
+
+		std::cout << "mylist contains(ft):";
+		for (ft::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
+			std::cout << ' ' << *it;
+
+		std::cout << '\n';
+		std::cout << "mylist contains(stl): 300 200 100 100\n";
     }
 	std::cout << "\n\n ***************Test pop_front***********\n\n";
     {
-		
+		ft::list<int> mylist;
+		mylist.push_back (100);
+		mylist.push_back (200);
+		mylist.push_back (300);
+
+		std::cout << "Popping out the elements in mylist(ft):";
+		while (!mylist.empty())
+		{
+			std::cout << ' ' << mylist.front();
+			mylist.pop_front();
+		}
+
+		std::cout << "\nFinal size of mylist is " << mylist.size() << '\n';
+		std::cout << "Popping out the elements in mylist(stl): 100 200 300 \nFinal size of mylist is 0\n";
     }
 	std::cout << "\n\n ***************Test push_back***********\n\n";
     {
-		
+		ft::list<int> mylist;
+		int myint;
+
+		std::cout << "Please enter some integers (enter 0 to end):\n";
+
+		do {
+			std::cin >> myint;
+			mylist.push_back (myint);
+		} while (myint);
+
+		std::cout << "mylist stores " << mylist.size() << " numbers.\n";
     }
 	std::cout << "\n\n ***************Test pop_back***********\n\n";
     {
-		
+		ft::list<int> mylist;
+		int sum (0);
+		mylist.push_back (100);
+		mylist.push_back (200);
+		mylist.push_back (300);
+
+		while (!mylist.empty())
+		{
+			sum+=mylist.back();
+			mylist.pop_back();
+		}
+		std::cout << "The elements of mylist summed(ft) " << sum << '\n';
+		std::cout << "The elements of mylist summed(stl) 600\n";
     }
 	std::cout << "\n\n ***************Test insert**********\n\n";
     {

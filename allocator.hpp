@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocator.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 11:20:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/01 11:05:14 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/05 14:34:12 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace ft
             pointer address(reference x ) const{ return &x;}
             const_pointer address(const_reference x ) const{ return &x;}
             
-            size_type max_size() const { return static_cast<size_t>(-1) / sizeof(value_type);} ///to check
+            size_type max_size() const { return static_cast<size_type>(-1) / sizeof(value_type);} ///to check
 
             pointer allocate(size_type n)
             {

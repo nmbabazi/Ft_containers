@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/05 14:11:10 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/05 14:22:00 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ namespace ft
 /////////////////////capacity////////////////////////////////
             bool empty() const{ return _size == 0;};
             size_type size() const{return _size;}
-            size_type max_size() const{return _alloc.max_size();};
+            size_type max_size() const{return _alloc_node.max_size();};
 /////////////////////acces///////////////////////////////////
             reference front(){return _list->next->data;}
             const_reference front() const{return _list->next->data;}
