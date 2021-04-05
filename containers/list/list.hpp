@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/04 17:00:54 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/05 14:11:10 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -433,90 +433,88 @@ namespace ft
                         erase(it--);
                 }
             }
-            // void merge (list& x)
-            // {
-            //     if (&x == this)
-            //         return ;
-            // }
-            // template <class Compare>
-            // void merge (list& x, Compare comp)
-            // {
-            //     if (&x == this)
-            //         return ;
-            // }
-            // void sort()
-            // {  
-            //     std::cout << "LIST INITIAL :"; printlist();
-            //     for(iterator position = begin(); position != end(); )
-            //     {
-            //         iterator temp = position->next;
-            //         iterator pos = position->next;
-            //         while(pos!= end())
-            //         {
-            //             iterator tmp = pos->next;
-            //             if (*pos < *position)
-            //             {
-            //                 std::cout << *position << " < " << *pos << std::endl;
-            //                 iterator holder = position;
-                            
-            //                 std::cout << "position->prev" << " = " << position->prev->data << std::endl;
-            //                 position->prev->next = pos.get_ptr();
-            //                 position->next->prev = pos.get_ptr();
-            //                 std::cout << "position->next" << " = " << position->next->data << std::endl;
+            void merge (list& x)
+            {
+                if (&x == this)
+                    return ;
+                splice(end(), x);
+                sort(); 
+            }
+            template <class Compare>
+            void merge (list& x, Compare comp)
+            {
+                if (&x == this)
+                    return ;
+                splice(end(), x);
+                sort(comp); 
+            }
+            void sort()
+            {
+                for (iterator start = begin(); start != end();)
+                {							
+					iterator hold = start->next;		
+					for (iterator it = begin()->next; it != end();)
+                    {
+						iterator nxt = it->next;
+						iterator prv = it->prev;
+						if (*it < *prv){
+                            Node* tmp= it->next;
+							it->next->prev = prv.get_ptr();
+							
+							it->next = prv.get_ptr();
+							it->prev = prv->prev;
+							
+							prv->prev->next = it.get_ptr();
+							prv->prev = it.get_ptr();
+							prv->next = tmp;
+						}
+						it = nxt;
+					}
+                    start = hold;
+				}
+            }
+            template <class Compare>
+            void sort (Compare comp)
+            {
+                for (iterator start = begin(); start != end();)
+                {							
+					iterator hold = start->next;		
+					for (iterator it = begin()->next; it != end();)
+                    {
+						iterator nxt = it->next;
+						iterator prv = it->prev;
+						if (comp(*it, *prv)){
+                            Node* tmp= it->next;
+							it->next->prev = prv.get_ptr();
+							
+							it->next = prv.get_ptr();
+							it->prev = prv->prev;
+							
+							prv->prev->next = it.get_ptr();
+							prv->prev = it.get_ptr();
+							prv->next = tmp;
+						}
+						it = nxt;
+					}
+                    start = hold;
+				}
 
-            //                 pos->next = holder->next;
-            //                 std::cout << "holder->next" << " = " << holder->next->data << std::endl;
-            //                 pos->prev = holder->prev;
-            //                 std::cout << "holder->prev" << " = " << holder->prev->data << std::endl;
+            }
+            void reverse()
+            {
+                iterator first = begin();
+                Node *tmp = _list->next;
+				_list->next = _list->prev;
+				_list->prev = tmp;
+                for (size_type i = 0; i < _size; i++)
+                {	
+                    iterator nxt = first->next;
+                    first->next = first->prev;
+                    first->prev = nxt.get_ptr();
+                    first = nxt;                 
+				}
 
-            //                 position->next = pos->next;
-            //                 std::cout << "pos->next" << " = " << pos->next->data << std::endl;
-            //                 position->prev = pos->prev;
-            //                 std::cout << "pos->prev" << " = " << pos->prev->data << std::endl;
-
-            //                 pos->prev->next = position.get_ptr();
-            //                 pos->next->prev = position.get_ptr();
-                           
-            //             }
-            //             std::cout << "LIST STATUS  :"; printlist();
-            //             pos = tmp;
-            //         }
-            //         position = temp;
-            //     }
-            // }
-            // template <class Compare>
-            // void sort (Compare comp)
-            // {
-            //     for (size_type i = 0; i < _size; i++)
-            //     {
-            //         for (iterator it(begin()->next); it!= end(); )
-            //         {
-            //             iterator prv = it->prev;
-            //             iterator nxt = it->next;
-            //             if (comp(*it, *prv))
-            //             {
-            //                 Node* tmp= it->next;
-            //                 it->next->prev = prv.get_ptr();
-                            
-            //                 it->next = prv.get_ptr();
-            //                 it->prev = prv->prev;
-                            
-            //                 prv->prev->next = it.get_ptr();
-            //                 prv->prev = it.get_ptr();
-            //                 prv->next = tmp;
-            //             }
-            //             it = nxt;
-            //         }
-            //     }
-            // }
-            // void reverse();
-
-        	// void printlist()
-			// {
-			// 	for (iterator it = begin(); it != end(); it++)
-			// 		std::cout << *it << "| ";
-			// 	std::cout << std::endl << std::endl;
-			// }
+            }
 /////////////////////overload///////////////////////////////
         friend bool operator==(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
         {

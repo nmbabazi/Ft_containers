@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/04 16:22:51 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/05 14:10:04 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ struct is_near {
   bool operator() (double first, double second)
   { return (fabs(first-second)<5.0); }
 };
+
+// compare only integral part:
+bool mycomparison (double first, double second)
+{ return ( int(first)<int(second) ); }
 
 bool compare_nocase (const std::string& first, const std::string& second)
 {
@@ -426,31 +430,73 @@ int main ()
 		std::cout << "mylist contains(stl-not sorted): 12.15 2.72 73 12.77 3.14 12.77 73.35 15.3 72.25\n";
 		//std::cout << "mylist contains(stl-sorted): 2.72 12.15 72.25\n";
     }
+	std::cout << "\n\n ***************Test merge***********\n\n";
+    {
+		ft::list<double> first, second;
+
+		first.push_back (3.1);
+		first.push_back (2.2);
+		first.push_back (2.9);
+
+		second.push_back (3.7);
+		second.push_back (7.1);
+		second.push_back (1.4);
+
+		first.sort();
+		second.sort();
+
+		first.merge(second);
+
+		// (second is now empty)
+
+		second.push_back (2.1);
+
+		first.merge(second,mycomparison);
+
+		std::cout << "first contains(ft):";
+		for (ft::list<double>::iterator it=first.begin(); it!=first.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "first contains(stl): 1.4 2.2 2.9 2.1 3.1 3.7 7.1\n";
+    }
 	std::cout << "\n\n ***************Test sort***********\n\n";
     {
-		// ft::list<std::string> mylist;
-		// ft::list<std::string>::iterator it;
-		// mylist.push_back ("one");
-		// mylist.push_back ("two");
-		// mylist.push_back ("Three");
+		ft::list<std::string> mylist;
+		ft::list<std::string>::iterator it;
+		mylist.push_back ("one");
+		mylist.push_back ("two");
+		mylist.push_back ("Three");
 
-		// mylist.sort();
-
-		// mylist.sort(compare_nocase);
-
-		// std::cout << "mylist contains(ft):";
-		// for (it=mylist.begin(); it!=mylist.end(); ++it)
-		// 	std::cout << ' ' << *it;
-		// std::cout << '\n';
-		// std::cout << "mylist contains(stl): one Three two\n";
-		int mydoubles[]={ 3, 5, 9, 4, 2, 6};
-		ft::list<int> mylist (mydoubles,mydoubles+6);
 		mylist.sort();
+
+		std::cout << "mylist contains(ft):";
+		for (it=mylist.begin(); it!=mylist.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "mylist contains(stl): Three one two\n";
+
+		mylist.sort(compare_nocase);
+
+		std::cout << "mylist contains(ft):";
+		for (it=mylist.begin(); it!=mylist.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+		std::cout << "mylist contains(stl): one Three two\n";
+		
+    }
+	std::cout << "\n\n ***************Test reverse***********\n\n";
+    {
+		ft::list<int> mylist;
+
+		for (int i=1; i<10; ++i) mylist.push_back(i);
+
+		mylist.reverse();
+
 		std::cout << "mylist contains(ft):";
 		for (ft::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
 			std::cout << ' ' << *it;
 		std::cout << '\n';
-		
+		std::cout << "mylist contains(stl): 9 8 7 6 5 4 3 2 1\n";
     }
 	std::cout << "\n\n ***************Test relational operators***********\n\n";
     {
