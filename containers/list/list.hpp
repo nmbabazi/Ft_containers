@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/05 16:13:03 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/06 16:32:50 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ namespace ft
                 typedef ptrdiff_t						difference_type;
 
                 ListIterator(pointeur ptr = 0): _ptr(ptr){}
-                ListIterator(ListIterator const &cp){_ptr = cp._ptr;}
+                ListIterator(ListIterator const &cp){_ptr = cp.get_ptr();}
                 ListIterator operator=(ListIterator const &cp)
                 { 
                     if (this != &cp)
-                        this->_ptr = cp._ptr;
+                        this->_ptr = cp.get_ptr();
                     return *this;
                 }
                 ~ListIterator(){}
@@ -74,8 +74,8 @@ namespace ft
                 ListIterator	operator--(int){ListIterator it = *this; --(*this); return it;}
                 pointeur        get_ptr()const{return _ptr;}
 
-                bool			operator==(const ListIterator &it){ return _ptr == it._ptr;}
-                bool			operator!=(const ListIterator &it){ return _ptr != it._ptr;}
+                bool			operator==(const ListIterator &it){ return _ptr == it.get_ptr();}
+                bool			operator!=(const ListIterator &it){ return _ptr != it.get_ptr();}
                 
                 private:
                     pointeur _ptr; 
@@ -90,11 +90,11 @@ namespace ft
                 typedef ptrdiff_t						difference_type;
 
                 ConstListIterator(pointeur ptr = 0): _ptr(ptr){}
-                ConstListIterator(ConstListIterator const &cp){_ptr = cp._ptr;}
+                ConstListIterator(ListIterator const &cp){_ptr = cp.get_ptr();}
                 ConstListIterator operator=(ConstListIterator const &cp)
                 { 
                     if (this != &cp)
-                        this->_ptr = cp._ptr;
+                        this->_ptr = cp.get_ptr();
                     return *this;
                 }
                 ~ConstListIterator(){}
@@ -107,8 +107,8 @@ namespace ft
                 ConstListIterator	operator--(int){ConstListIterator it = *this; --(*this); return it;}
                 pointeur            get_ptr()const{return _ptr;}
                 
-                bool			operator==(const ConstListIterator &it){ return _ptr == it._ptr;}
-                bool			operator!=(const ConstListIterator &it){ return _ptr != it._ptr;}
+                bool			operator==(const ConstListIterator &it){ return _ptr == it.get_ptr();}
+                bool			operator!=(const ConstListIterator &it){ return _ptr != it.get_ptr();}
                 
                 private:
                     pointeur _ptr; 
@@ -121,11 +121,12 @@ namespace ft
                 typedef ptrdiff_t						difference_type;
 
                 ListRIterator(pointeur ptr = 0): _ptr(ptr){}
-                ListRIterator(ListRIterator const &cp){_ptr = cp._ptr;}
+                ListRIterator(ListRIterator const &cp){_ptr = cp.get_ptr();}
+                ListRIterator(ListIterator const &cp){_ptr = cp.get_ptr()->prev;}
                 ListRIterator operator=(ListRIterator const &cp)
                 { 
                     if (this != &cp)
-                        this->_ptr = cp._ptr;
+                        this->_ptr = cp.get_ptr();
                     return *this;
                 }
                 ~ListRIterator(){}
@@ -138,8 +139,8 @@ namespace ft
                 ListRIterator	operator--(int){ListRIterator it = *this; --(*this); return it;}
                 pointeur        get_ptr()const{return _ptr;}
 
-                bool			operator==(const ListRIterator &it){ return _ptr == it._ptr;}
-                bool			operator!=(const ListRIterator &it){ return _ptr != it._ptr;}
+                bool			operator==(const ListRIterator &it){ return _ptr == it.get_ptr();}
+                bool			operator!=(const ListRIterator &it){ return _ptr != it.get_ptr();}
                 
                 private:
                     pointeur _ptr; 
@@ -154,11 +155,12 @@ namespace ft
                 typedef ptrdiff_t						difference_type;
 
                 ConstListRIterator(pointeur ptr = 0): _ptr(ptr){}
-                ConstListRIterator(ConstListRIterator const &cp){_ptr = cp._ptr;}
+                ConstListRIterator(ListRIterator const &cp){_ptr = cp.get_ptr();}
+                ConstListRIterator(ListIterator const &cp){_ptr = cp.get_ptr()->prev;}
                 ConstListRIterator operator=(ConstListRIterator const &cp)
                 { 
                     if (this != &cp)
-                        this->_ptr = cp._ptr;
+                        this->_ptr = cp.get_ptr();
                     return *this;
                 }
                 ~ConstListRIterator(){}
@@ -171,8 +173,8 @@ namespace ft
                 ConstListRIterator	operator--(int){ConstListRIterator it = *this; --(*this); return it;}
                 pointeur            get_ptr()const{return _ptr;}
                 
-                bool			operator==(const ConstListRIterator &it){ return _ptr == it._ptr;}
-                bool			operator!=(const ConstListRIterator &it){ return _ptr != it._ptr;}
+                bool			operator==(const ConstListRIterator &it){ return _ptr == it.get_ptr();}
+                bool			operator!=(const ConstListRIterator &it){ return _ptr != it.get_ptr();}
                 
                 private:
                     pointeur _ptr; 
@@ -230,10 +232,11 @@ namespace ft
                 _list->prev = _list;
             }
 ///////////////////////iterator//////////////////////////////
-            iterator begin(){return iterator(_list->next);}
-            const_iterator begin()const{return const_iterator(_list->next);}
+            iterator begin(){return (!_size ? iterator(_list) : iterator(_list->next));}
+            const_iterator begin()const{return (!_size ? iterator(_list) : iterator(_list->next));}
             iterator end(){return iterator(_list);}
             const_iterator end()const{return const_iterator(_list);}
+            
             reverse_iterator rbegin(){return reverse_iterator(_list->prev);}
             const_reverse_iterator rbegin()const {return const_reverse_iterator(_list->prev);}
             reverse_iterator rend(){return reverse_iterator(_list);}
@@ -320,13 +323,13 @@ namespace ft
             void insert (iterator position, size_type n, const value_type& val)
             {
                 for (size_type i = 0; i < n; i++)
-                    position = insert(position, val);
+                    insert(position, val);
             }
             template <class InputIterator>
             void insert (iterator position, typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last)
             {
                 while (first != last)
-                    position = insert(position, *first++);
+                    insert(position, *first++);
             }
             iterator erase (iterator position)
             {
@@ -561,10 +564,13 @@ namespace ft
             if (lhs == rhs || lhs > rhs)
                 return true;
             return false;
-        }	
-        friend void swap (list& x, list& y) { x.swap(y); }
+        }
     };
-
+    template<class T >
+    void	swap(list<T>& x, list<T>& y)
+    {
+        x.swap(y);
+    }
 }
 
 #endif

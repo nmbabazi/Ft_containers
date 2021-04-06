@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/05 16:50:36 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/06 14:22:24 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ namespace ft
 
         VectRIterator(value_type *ptr = 0): _ptr(ptr){}
         VectRIterator(VectRIterator<T> const &cp){ _ptr = cp.get_ptr();}
+        VectRIterator(VectIterator<T> const &cp){ _ptr = cp.get_ptr();}
         VectRIterator operator=(VectRIterator const &cp)
         { if (this != &cp)
                 this->_ptr = cp.get_ptr();
@@ -192,6 +193,7 @@ namespace ft
 
         ConstVectRIterator(pointeur ptr = 0): _ptr(ptr){}
         ConstVectRIterator(VectRIterator<T> const &cp){ _ptr = cp.get_ptr();}
+        ConstVectRIterator(VectIterator<T> const &cp){ _ptr = cp.get_ptr();}
         ConstVectRIterator operator=(ConstVectRIterator const &cp)
         { if (this != &cp)
                 this->_ptr = cp.get_ptr();

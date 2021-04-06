@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 11:20:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/05 16:02:39 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/06 13:48:07 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ namespace ft
                     throw std::bad_alloc();
                 return ret;
             }
+            
             void deallocate (pointer p, size_type n)
             {
                 (void)n;

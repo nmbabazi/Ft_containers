@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   mainstd.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 13:07:06 by hbaudet           #+#    #+#             */
-/*   Updated: 2021/04/06 13:22:08 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/06 13:21:44 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,8 @@
 #include "vector.hpp"
 #include <vector>
 
-#ifndef STD
-# define NAMESPACE ft
-#else
+
 # define NAMESPACE std
-#endif
 
 using namespace NAMESPACE;
 

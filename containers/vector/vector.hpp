@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/05 17:42:05 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/06 13:48:39 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ namespace ft
             size_type       _capacity;
 ///////////////////////constructeur//////////////////////////////
         public:          
-            vector(const allocator_type& alloc = allocator_type()):_alloc(alloc),_size(0), _capacity(0){ _vector = NULL;}
+            vector(const allocator_type& alloc = allocator_type()):_alloc(alloc),_size(0), _capacity(0){_vector = NULL;}
             vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()):_alloc(alloc), _size(0), _capacity(0)
             {
+                //std::cout << "constructeur (valeur)\n";
                 _vector = _alloc.allocate(n);
                 for (size_type i = 0; i < n; i++)
                      push_back(val);
@@ -57,15 +58,16 @@ namespace ft
             template <class InputIterator>
             vector (typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last, const allocator_type& alloc = allocator_type()):_vector(NULL), _alloc(alloc),_capacity(0), _size(0)
             {
+                //std::cout << "constructeur (range)\n";
                 while(first != last)
                 {
                     push_back(*first);
                     first++;
                 }
             }
-            vector (const vector& x): _alloc(x._alloc), _size(0), _capacity(0)
+            vector (const vector& x): _alloc(x._alloc), _size(0), _capacity(x._size)
             {
-                reserve(x._capacity);
+                _vector = _alloc.allocate(_capacity);
                 for (size_type i = 0; i < x._size; i++)
                     push_back(x._vector[i]);
             }
@@ -77,6 +79,7 @@ namespace ft
             }
             vector& operator=(const vector& x)
             {
+                //std::cout << "constructeur (assignation)\n";
                 if (_vector != NULL)
                     clear();
                 if (_capacity < x._capacity)
@@ -117,21 +120,25 @@ namespace ft
             {
                 if (n > _capacity)
                 {
-                    pointer temp;
-                    temp = _alloc.allocate(n);
-                    if (_capacity)
-                    {
-                        for(size_type i = 0; i < n; i++)
+                    try
+                    {                        
+                        pointer temp = _alloc.allocate(n);
+                        int i = 0;
+                        for (iterator it = begin(); it != end(); it++)
                         {
-                            _alloc.construct(temp + i, *(_vector + i));
-                            _alloc.destroy(_vector + i);
+                            _alloc.construct(temp + i, *it);
+                            _alloc.destroy(it.get_ptr());
+                            i++;
                         }
                         _alloc.deallocate(_vector, _capacity);
+                        _capacity = n;
+                        _vector = temp;
                     }
-                    _capacity = n;
-                    _vector = temp;
+                    catch(const std::exception& e)
+                    {
+                        std::cerr << e.what() << '\n';
+                    }
                 }
-                std::cout << "size reserve=" << _size << std::endl;
             }
 /////////////////////acces///////////////////////////////////
             reference front(){return _vector[0];}
@@ -158,8 +165,6 @@ namespace ft
             template <class InputIterator>
             void assign (typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last)
             {
-                // for (size_type i = 0; i < _size; i++)
-                //     _alloc.destroy(_vector + i);
                 clear();
                 while(first != last)
                 {
@@ -169,15 +174,15 @@ namespace ft
             }
             void assign (size_type n, const value_type& val)
             {
-                // for (size_type i = 0; i < _size; i++)
-                //     _alloc.destroy(_vector + i);
                 clear();
                 for (size_type i = 0; i < n; i++)
+                {
+                    
                     push_back(val);
+                }
             }
             void push_back (const value_type& val)
             {
-                std::cout << "size avant = " << _size << std::endl;
                 if (_size == _capacity)
                 {
                     if (_capacity == 0)
@@ -186,9 +191,7 @@ namespace ft
                         reserve(_capacity * 2);
                 }
                 _alloc.construct(&_vector[_size], val);
-                //_vector[_size] = val;
                 _size++;
-                std::cout << "size apres = " << _size << std::endl;
             }
             void pop_back()
             {
@@ -221,9 +224,11 @@ namespace ft
             template <class InputIterator>
             void insert (iterator position, typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last)
             {
-                difference_type diff = last - first;
+                size_type n = 0;
+                for (iterator  count = first; count != last; count++)
+                        n++;  
                 vector tmp;
-                tmp.reserve(_capacity + diff);
+                tmp.reserve(_capacity + n);
                 iterator it = this->begin();
                 while (it < position)
                     tmp.push_back(*it++);
