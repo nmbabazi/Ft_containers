@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 16:55:24 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/08 14:41:42 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/09 11:48:47 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,8 @@ namespace ft{
     template <class T> 
     struct less : std::binary_function <T,T,bool> 
     {
-        bool operator() (const T& x, const T& y) const {return x<y;
-    }
-};
+        bool operator() (const T& x, const T& y) const {return (x<y);}
+    };
     
 }
 
