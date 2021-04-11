@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:25:47 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/09 14:38:43 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/10 13:19:40 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,14 @@ namespace ft
     template <class T1, class T2>
     struct pair
     {
-        typedef T1                    first_type;     
-        typedef T2                    second_type;
 
-        pair()
+        pair(const T1& k = T1(), const T2& val = T2()): first(k), second(val) {}
+        template<class U, class V>
+        pair (const pair<U,V>& pr)
         {
-            first = first_type();
-            second = second_type();
+            first = T1(pr.first);
+            second = T2(pr.second);
         }
-        pair (const first_type& a, const second_type& b): first(a), second(b){}
-        // template<class U, class V>
-        // pair (const pair<U,V>& pr)
-        // {
-        //     first = first_type(pr.first);
-        //     second = second_type(pr.second);
-        // }
 
         pair& operator= (const pair& pr)
         {
@@ -43,8 +36,8 @@ namespace ft
             return *this;
         }
 
-        first_type  first;
-        second_type second;
+        T1  first;
+        T2 second;
     };
     template <class T1, class T2>
     bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs){return lhs.first == rhs.first && lhs.second == rhs.second;}

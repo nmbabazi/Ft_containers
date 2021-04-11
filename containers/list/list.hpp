@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/08 14:42:49 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/11 14:13:28 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@ namespace ft
                 _list->prev = _list;
             }
 ///////////////////////iterator//////////////////////////////
-            iterator begin(){return (!_size ? iterator(_list) : iterator(_list->next));}
+            iterator begin(){return (!_size ? iterator(_list) : iterator(_list->next));} //// heuuuuu?!
             const_iterator begin()const{return (!_size ? iterator(_list) : iterator(_list->next));}
             iterator end(){return iterator(_list);}
             const_iterator end()const{return const_iterator(_list);}
@@ -242,9 +242,9 @@ namespace ft
             reverse_iterator rend(){return reverse_iterator(_list);}
             const_reverse_iterator rend()const{return const_reverse_iterator(_list);}
 /////////////////////capacity////////////////////////////////
-            bool empty() const{ return _size == 0;};
+            bool empty() const{ return _size == 0;}
             size_type size() const{return _size;}
-            size_type max_size() const{return _alloc_node.max_size();};
+            size_type max_size() const{return _alloc_node.max_size();}
 /////////////////////acces///////////////////////////////////
             reference front(){return _list->next->data;}
             const_reference front() const{return _list->next->data;}

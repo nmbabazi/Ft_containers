@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:55:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/10 13:05:17 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/11 14:13:34 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ namespace ft
 				Node		*getprev()
                 {
                     Node *ret;
-                    if (isleaf() || this->right == NULL)
-                    {  
+                    if (isleaf() || this->left == NULL)
+                    { 
                         ret = this->parent;
-                        while (ret->data.first > this->data.first)
+                        while (ret->data.first > this->data.first && this->data.first)
                             ret = ret->parent;
                         return (ret); 
                     }
@@ -87,8 +87,7 @@ namespace ft
             allocator_type  _alloc;
 			key_compare	    _comp;
             Node            _end;
-            Node            _begin;
-            Node            _root;
+            Node            *_root;
             size_type       _size;
             ft::Allocator<Node> _alloc_node; 
         public:	
@@ -128,8 +127,8 @@ namespace ft
             {
                 public:
                 typedef Node*                           pointeur;
-                typedef const T&                        const_ref;
-                typedef const T*                        const_pointeur;
+                typedef const value_type&                        const_ref;
+                typedef const value_type*                        const_pointeur;
                 typedef ptrdiff_t						difference_type;
 
                 ConstMapIterator(pointeur ptr = 0): _ptr(ptr){}
@@ -193,8 +192,8 @@ namespace ft
             {
                 public:
                 typedef Node*                           pointeur;
-                typedef const T&                        const_ref;
-                typedef const T*                        const_pointeur;
+                typedef const value_type&                        const_ref;
+                typedef const value_type*                        const_pointeur;
                 typedef ptrdiff_t						difference_type;
 
                 ConstMapRIterator(pointeur ptr = 0): _ptr(ptr){}
@@ -229,35 +228,50 @@ namespace ft
             typedef ConstMapRIterator   const_reverse_iterator;
 
 ///////////////////////constructeur//////////////////////////////
-			map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):_comp(comp), _alloc(alloc), _root(NULL), _size(0)
+			map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):_comp(comp), _root(NULL), _alloc(alloc), _size(0)
             {
-                initMaP();
+                _end.right = NULL;
+                _end.left = NULL;
             }
 			template <class InputIterator>
-			map (typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):_comp(comp), _alloc(alloc), _root(NULL), _size(0)
+			map (typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):_comp(comp), _root(NULL), _alloc(alloc), _size(0)
 			{
+                _end.right = NULL;
+                _end.left = NULL;
+                insert(first, last);
             }
-			map (const map& x)
+			map (const map& x):_comp(x._comp), _size(0)
             {
+                _end.right = NULL;
+                _end.left = NULL;
+                const_iterator it = x.begin();
+                const_iterator rit = x.end();
+                insert(it, rit);
             }
 
 			~map(){}
 
-			map& operator=(const map& x){}
+			map& operator=(const map& x)
+            {
+                const_iterator it = x.begin();
+                const_iterator rit = x.end();
+                insert(it, rit);
+                return (*this);
+            }
 ///////////////////////iterator//////////////////////////////
 			iterator begin(){return iterator(getBegin(_root));}
-			const_iterator begin() const{return iterator(getBegin(_root));}
-			iterator end(){_end->parent = getEnd(_root); return iterator(_end);}
-			const_iterator end() const{_end->parent = getEnd(_root); return iterator(_end);}
+			const_iterator begin() const{return const_iterator(getBegin(_root));}
+			iterator end(){return iterator(getEnd(_root)->right);}
+			const_iterator end() const{return const_iterator(getEnd(_root)->right);}
 
 			reverse_iterator rbegin();
 			const_reverse_iterator rbegin() const;
 			reverse_iterator rend();
 			const_reverse_iterator rend() const;
 /////////////////////capacity////////////////////////////////
-			bool empty() const;
-			size_type size() const;
-			size_type max_size() const;
+			bool empty() const{return _size == 0;}
+			size_type size() const{return _size;}
+			size_type max_size() const{return _alloc_node.max_size();}
 /////////////////////acces///////////////////////////////////
 			mapped_type& operator[] (const key_type& k)
             {
@@ -266,7 +280,7 @@ namespace ft
                     return ret->data.second;
                 value_type pr(k,mapped_type());
                 ret = my_insert(pr, &_root);
-                    return ret->data.second;
+                return ret->data.second;
             }
 /////////////////////modifiers///////////////////////////////
 			pair<iterator,bool> insert (const value_type& val)
@@ -275,8 +289,6 @@ namespace ft
                 if ((ret = search_bykey(val.first, _root)))
                     return ft::pair<iterator, bool>(iterator(ret), false);
                 ret = my_insert(val, &_root);
-                if (_root != NULL)
-                _size++;
                 return ft::pair<iterator, bool>(iterator(ret), true);
             }
 			iterator insert (iterator position, const value_type& val)
@@ -285,7 +297,6 @@ namespace ft
                 if ((ret = search_bykey(val.first, _root)))
                     return iterator(ret);
                 ret = my_insert(val, &_root);
-                _size++;
                 return iterator(ret);
             }
 			template <class InputIterator>
@@ -324,59 +335,78 @@ namespace ft
                 {
                     *tree = new_node(val);
                     (*tree)->parent = NULL;
+                    if (!_size)
+                    {
+                        // std::cout << "1\n";
+                        (*tree)->right = &_end;
+                        _end.parent = *tree;
+                    }
+                    _size++;
+                    // std::cout << "2\n";
                     return *tree;
                 }
                 if (_comp(val.first, (*tree)->data.first))
                 {
                     if ((*tree)->left == NULL)
-                        {
-                            (*tree)->left = new_node(val);
-                            (*tree)->left->parent = *tree;
-                            return (*tree)->left;
-                        }
-                        if ((*tree)->left == _begin)
-                        {
-                            (*tree)->left = new_node(val);
-                            (*tree)->left->parent = *tree;
-                            return (*tree)->left;
-                        }
+                    {
+                        (*tree)->left = new_node(val);
+                        (*tree)->left->parent = *tree;
+                        _size++;
+                        // std::cout << "3\n";
+                        return (*tree)->left;
+                    }
                     my_insert(val, &(*tree)->left);
                 }
                 if (!_comp(val.first, (*tree)->data.first))
                 {
                     if ((*tree)->right == NULL)
-                        {
-                            (*tree)->right = new_node(val);
-                            (*tree)->right->parent = *tree;
-                            return (*tree)->right;
-                        }
+                    {
+                        (*tree)->right = new_node(val);
+                        (*tree)->right->parent = *tree;
+                        _size++;
+                        // std::cout << "4\n";
+                        return (*tree)->right;
+                    }
+                    if ((*tree)->right == &_end)
+                    {
+                        
+                        (*tree)->right = new_node(val);
+                        (*tree)->right->parent = *tree;
+                        (*tree)->right->right = &_end;
+                        _end.parent = (*tree)->right;
+                        _size++;
+                        // std::cout << "5\n";
+                        return (*tree)->right;
+                    }
                     my_insert(val, &(*tree)->right);
                 }
                 return (NULL);
             }
-            void    printMapprivate(Node *tree)
-            {
-                if (tree)
-                {
-                    if (tree->left)
-                    {
-                        printMapprivate(tree->left);
-                    }
-                    std::cout << tree->data.first << " = " << tree->data.second <<  std::endl;
-                    if (tree->right)
-                    {
-                        printMapprivate(tree->right);
-                    }
-                }
-                else
-                    std::cout << "The tree is empty\n";
-            }
+            // void    printMapprivate(Node *tree)
+            // {
+            //     if (tree)
+            //     {
+            //         if (tree->left)
+            //         {
+            //             printMapprivate(tree->left);
+            //         }
+            //         std::cout << tree->data.first << " = " << tree->data.second <<  std::endl;
+            //         if (tree->right)
+            //         {
+            //             printMapprivate(tree->right);
+            //         }
+            //     }
+            //     else
+            //         std::cout << "The tree is empty\n";
+            // }
             Node    *new_node(value_type val)
             {
+                // std::cout << "val: " << val.first << " = " << val.second << std::endl;
                 Node    *new_node = _alloc_node.allocate(1);
                 _alloc.construct(&new_node->data, val);
                 new_node->right = NULL;
                 new_node->left = NULL;
+                // std::cout << "new node: " << new_node->data.first << " = " << new_node->data.second << std::endl;
                 return (new_node);
             }
             Node *search_bykey(key_type key, Node *tree)
@@ -393,7 +423,7 @@ namespace ft
             }
 
 
-            Node    *getBegin(Node *tree)
+            Node    *getBegin(Node *tree) const
             {
                 if (!tree)
                     return (NULL);
@@ -402,25 +432,14 @@ namespace ft
                 else
                     return (getBegin(tree->left));  
             }
-            Node    *getEnd(Node *tree)
+            Node    *getEnd(Node *tree) const
             {
                 if (!tree)
                     return (NULL);
-                if (!tree->right)
+                if (!tree->right || tree->right == &_end)
                     return tree;
                 else
                     return (getEnd(tree->right));  
-            }
-            void    initMap()
-            {
-				_root.left = _begin;
-                _root->right = _end;
-				_begin.parent = _root;
-				_begin.next = NULL;
-				_begin.prev = NULL;
-				_end.parent = _root;
-				_end.next = NULL;
-				_end.prev = NULL; 
             }
     };
 }
