@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:55:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/11 14:13:34 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/11 16:34:11 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ namespace ft
                     if (isleaf() || this->right == NULL)
                     {  
                         ret = this->parent;
-                        while (ret->data.first < this->data.first)
+                        while (ret->data.first < this->data.first && this->data.first)
                             ret = ret->parent;
                         return (ret); 
                     }
@@ -87,6 +87,7 @@ namespace ft
             allocator_type  _alloc;
 			key_compare	    _comp;
             Node            _end;
+            Node            _begin;
             Node            *_root;
             size_type       _size;
             ft::Allocator<Node> _alloc_node; 
@@ -232,18 +233,24 @@ namespace ft
             {
                 _end.right = NULL;
                 _end.left = NULL;
+                _begin.right = NULL;
+                _begin.left = NULL;
             }
 			template <class InputIterator>
 			map (typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):_comp(comp), _root(NULL), _alloc(alloc), _size(0)
 			{
                 _end.right = NULL;
                 _end.left = NULL;
+                _begin.right = NULL;
+                _begin.left = NULL;
                 insert(first, last);
             }
 			map (const map& x):_comp(x._comp), _size(0)
             {
                 _end.right = NULL;
                 _end.left = NULL;
+                _begin.right = NULL;
+                _begin.left = NULL;
                 const_iterator it = x.begin();
                 const_iterator rit = x.end();
                 insert(it, rit);
@@ -264,10 +271,10 @@ namespace ft
 			iterator end(){return iterator(getEnd(_root)->right);}
 			const_iterator end() const{return const_iterator(getEnd(_root)->right);}
 
-			reverse_iterator rbegin();
-			const_reverse_iterator rbegin() const;
-			reverse_iterator rend();
-			const_reverse_iterator rend() const;
+			reverse_iterator rbegin(){return reverse_iterator(getEnd(_root));}
+			const_reverse_iterator rbegin() const{return const_reverse_iterator(getEnd(_root));}
+			reverse_iterator rend(){return reverse_iterator(getBegin(_root)->left);}
+			const_reverse_iterator rend() const{return const_reverse_iterator(getBegin(_root)->left);}
 /////////////////////capacity////////////////////////////////
 			bool empty() const{return _size == 0;}
 			size_type size() const{return _size;}
@@ -275,21 +282,19 @@ namespace ft
 /////////////////////acces///////////////////////////////////
 			mapped_type& operator[] (const key_type& k)
             {
-                Node *ret;
-                if ((ret = search_bykey(k, _root)))
-                    return ret->data.second;
-                value_type pr(k,mapped_type());
-                ret = my_insert(pr, &_root);
-                return ret->data.second;
+                value_type pr(k, mapped_type());
+			    return insert(pr).first->second;
             }
 /////////////////////modifiers///////////////////////////////
 			pair<iterator,bool> insert (const value_type& val)
             {
-                Node *ret;
-                if ((ret = search_bykey(val.first, _root)))
-                    return ft::pair<iterator, bool>(iterator(ret), false);
-                ret = my_insert(val, &_root);
-                return ft::pair<iterator, bool>(iterator(ret), true);
+                ft::pair<iterator,bool> ret;
+
+                ret.second = (search_bykey(val.first, _root) == NULL);
+                if (ret.second == true)
+                    my_insert(val, &_root);
+                ret.first = iterator(search_bykey(val.first, _root));
+                return ret;
             }
 			iterator insert (iterator position, const value_type& val)
             {
@@ -339,10 +344,13 @@ namespace ft
                     {
                         // std::cout << "1\n";
                         (*tree)->right = &_end;
+                        (*tree)->left = &_begin;
                         _end.parent = *tree;
+                        _begin.parent = *tree;
                     }
                     _size++;
                     // std::cout << "2\n";
+                    // std::cout << "ret : " << (*tree)->data.second << std::endl;
                     return *tree;
                 }
                 if (_comp(val.first, (*tree)->data.first))
@@ -353,6 +361,16 @@ namespace ft
                         (*tree)->left->parent = *tree;
                         _size++;
                         // std::cout << "3\n";
+                        return (*tree)->left;
+                    }
+                    if ((*tree)->left == &_begin)
+                    {
+                        (*tree)->left = new_node(val);
+                        (*tree)->left->parent = *tree;
+                        (*tree)->left->left = &_begin;
+                        _begin.parent = (*tree)->left;
+                        _size++;
+                        // std::cout << "3'\n";
                         return (*tree)->left;
                     }
                     my_insert(val, &(*tree)->left);
@@ -375,7 +393,8 @@ namespace ft
                         (*tree)->right->right = &_end;
                         _end.parent = (*tree)->right;
                         _size++;
-                        // std::cout << "5\n";
+                        // std::cout << "4'\n";
+                        // std::cout << "ret : " << (*tree)->right->data.second << std::endl;
                         return (*tree)->right;
                     }
                     my_insert(val, &(*tree)->right);
@@ -406,7 +425,7 @@ namespace ft
                 _alloc.construct(&new_node->data, val);
                 new_node->right = NULL;
                 new_node->left = NULL;
-                // std::cout << "new node: " << new_node->data.first << " = " << new_node->data.second << std::endl;
+                //std::cout << "new node: " << new_node->data.first << " = " << new_node->data.second << std::endl;
                 return (new_node);
             }
             Node *search_bykey(key_type key, Node *tree)
@@ -427,7 +446,7 @@ namespace ft
             {
                 if (!tree)
                     return (NULL);
-                if (!tree->left)
+                if (!tree->left || tree->left == &_begin)
                     return (tree);
                 else
                     return (getBegin(tree->left));  

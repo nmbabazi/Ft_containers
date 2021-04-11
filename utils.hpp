@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 16:55:24 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/09 11:48:47 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/11 15:08:33 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
  * repasser les test cplusplus sur vector et list
  * voir les verif a faire sur vector
  * justifier les operateur en friend ou en overload
- * check enable_if*/
+ * check enable_if
+ * checker mes pair*/
 
 namespace ft{
     template <bool B, class T = void>  ////to check

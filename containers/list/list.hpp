@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/11 14:13:28 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/11 14:43:21 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,8 +232,8 @@ namespace ft
                 _list->prev = _list;
             }
 ///////////////////////iterator//////////////////////////////
-            iterator begin(){return (!_size ? iterator(_list) : iterator(_list->next));} //// heuuuuu?!
-            const_iterator begin()const{return (!_size ? iterator(_list) : iterator(_list->next));}
+            iterator begin(){return iterator(_list->next);} //// heuuuuu?!
+            const_iterator begin()const{return const_iterator(_list->next);}
             iterator end(){return iterator(_list);}
             const_iterator end()const{return const_iterator(_list);}
             
