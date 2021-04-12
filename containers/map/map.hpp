@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:55:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/11 16:34:11 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/12 13:18:00 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,12 @@ namespace ft
                     }
                 }
 			};
-            allocator_type  _alloc;
+
 			key_compare	    _comp;
-            Node            _end;
-            Node            _begin;
+            Node            *_end;
+            Node            *_begin;
             Node            *_root;
+            allocator_type  _alloc;
             size_type       _size;
             ft::Allocator<Node> _alloc_node; 
         public:	
@@ -231,29 +232,31 @@ namespace ft
 ///////////////////////constructeur//////////////////////////////
 			map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):_comp(comp), _root(NULL), _alloc(alloc), _size(0)
             {
-                _end.right = NULL;
-                _end.left = NULL;
-                _begin.right = NULL;
-                _begin.left = NULL;
+                _end = new_node(value_type());
+                _end->right = NULL;
+                _end->left = NULL;
+                _begin = new_node(value_type());
+                _begin->right = NULL;
+                _begin->left = NULL;
             }
 			template <class InputIterator>
 			map (typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):_comp(comp), _root(NULL), _alloc(alloc), _size(0)
 			{
-                _end.right = NULL;
-                _end.left = NULL;
-                _begin.right = NULL;
-                _begin.left = NULL;
-                insert(first, last);
+                _end = new_node(value_type());
+                _end->right = NULL;
+                _end->left = NULL;
+                _begin = new_node(value_type());
+                _begin->right = NULL;
+                _begin->left = NULL;
             }
 			map (const map& x):_comp(x._comp), _size(0)
             {
-                _end.right = NULL;
-                _end.left = NULL;
-                _begin.right = NULL;
-                _begin.left = NULL;
-                const_iterator it = x.begin();
-                const_iterator rit = x.end();
-                insert(it, rit);
+                _end = new_node(value_type());
+                _end->right = NULL;
+                _end->left = NULL;
+                _begin = new_node(value_type());
+                _begin->right = NULL;
+                _begin->left = NULL;
             }
 
 			~map(){}
@@ -302,6 +305,7 @@ namespace ft
                 if ((ret = search_bykey(val.first, _root)))
                     return iterator(ret);
                 ret = my_insert(val, &_root);
+                (void)position;
                 return iterator(ret);
             }
 			template <class InputIterator>
@@ -313,9 +317,22 @@ namespace ft
                     first++;
                 }
             }
-			void erase (iterator position);
-			size_type erase (const key_type& k);
-			void erase (iterator first, iterator last);
+			void erase (iterator position)
+            {
+                my_erase(position->first, &_root);
+            }
+			size_type erase (const key_type& k)
+            {
+                if (!search_bykey(k, _root))
+                    return (0);
+                my_erase(k, &_root);
+                return (1);
+            }
+			void erase (iterator first, iterator last)
+            {
+                while (first != last)
+                    erase(first++);
+            }
 			void swap (map& x);
 			void clear();
 /////////////////////observer///////////////////////////////        
@@ -332,7 +349,6 @@ namespace ft
 			pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 			pair<iterator,iterator>             equal_range (const key_type& k);
 /////////////////////utiles///////////////////////////////
-            void    printMap(){printMapprivate(_root);}
         private:
             Node    *my_insert(value_type val, Node **tree)
             {
@@ -342,15 +358,12 @@ namespace ft
                     (*tree)->parent = NULL;
                     if (!_size)
                     {
-                        // std::cout << "1\n";
                         (*tree)->right = &_end;
                         (*tree)->left = &_begin;
                         _end.parent = *tree;
                         _begin.parent = *tree;
                     }
                     _size++;
-                    // std::cout << "2\n";
-                    // std::cout << "ret : " << (*tree)->data.second << std::endl;
                     return *tree;
                 }
                 if (_comp(val.first, (*tree)->data.first))
@@ -360,7 +373,6 @@ namespace ft
                         (*tree)->left = new_node(val);
                         (*tree)->left->parent = *tree;
                         _size++;
-                        // std::cout << "3\n";
                         return (*tree)->left;
                     }
                     if ((*tree)->left == &_begin)
@@ -370,7 +382,6 @@ namespace ft
                         (*tree)->left->left = &_begin;
                         _begin.parent = (*tree)->left;
                         _size++;
-                        // std::cout << "3'\n";
                         return (*tree)->left;
                     }
                     my_insert(val, &(*tree)->left);
@@ -382,7 +393,6 @@ namespace ft
                         (*tree)->right = new_node(val);
                         (*tree)->right->parent = *tree;
                         _size++;
-                        // std::cout << "4\n";
                         return (*tree)->right;
                     }
                     if ((*tree)->right == &_end)
@@ -393,39 +403,80 @@ namespace ft
                         (*tree)->right->right = &_end;
                         _end.parent = (*tree)->right;
                         _size++;
-                        // std::cout << "4'\n";
-                        // std::cout << "ret : " << (*tree)->right->data.second << std::endl;
                         return (*tree)->right;
                     }
                     my_insert(val, &(*tree)->right);
                 }
                 return (NULL);
             }
-            // void    printMapprivate(Node *tree)
-            // {
-            //     if (tree)
-            //     {
-            //         if (tree->left)
-            //         {
-            //             printMapprivate(tree->left);
-            //         }
-            //         std::cout << tree->data.first << " = " << tree->data.second <<  std::endl;
-            //         if (tree->right)
-            //         {
-            //             printMapprivate(tree->right);
-            //         }
-            //     }
-            //     else
-            //         std::cout << "The tree is empty\n";
-            // }
+            void my_erase(key_type val, Node **tree)
+            {
+                if (!*tree)
+                    return ;
+                Node *tmp = search_bykey(val, *tree);
+                if (!tmp)
+                    return ;
+                
+                else if (tmp->left == NULL && tmp->right == NULL)
+                {
+                    if(tmp->parent->right == tmp)
+                        tmp->parent->right = NULL;
+                    else if(tmp->parent->left == tmp)
+                        tmp->parent->left = NULL;
+                    else if (!tmp->parent)
+                        *tree = NULL;
+                    _alloc.destroy(&tmp->data);
+                    _alloc_node.deallocate(tmp, 1);
+                    tmp = NULL; 
+                    _size--;
+                    return ;
+                }
+                else if (tmp->left == NULL)
+                {
+                    tmp->right->parent = tmp->parent;
+                    if(tmp->parent->right == tmp)
+                        tmp->parent->right = tmp->right;
+                    else if(tmp->parent->left == tmp)
+                        tmp->parent->left = tmp->right;
+                    else if (!tmp->parent)
+                        *tree = tmp->right;
+                    std::cout << "key " << tmp->data.first << std::endl;
+                    _alloc.destroy(&tmp->data);
+                    _alloc_node.deallocate(&(*tmp), 1);
+                    tmp = NULL; 
+                    _size--;
+                    return ;
+                }
+                else if (tmp->right == NULL)
+                {
+                    tmp->left->parent = tmp->parent;
+                    if(tmp->parent->right == tmp)
+                        tmp->parent->right = tmp->left;
+                    else if(tmp->parent->left == tmp)
+                        tmp->parent->left = tmp->left;
+                    else if (!tmp->parent)
+                        *tree = tmp->left;
+                    _alloc.destroy(&tmp->data);
+                    _alloc_node.deallocate(tmp, 1);
+                    tmp = NULL; 
+                    _size--;
+                    return ;
+                }
+                else if (tmp->left != NULL && tmp->right != NULL)
+                {      
+                                 
+                    Node *temp = getBegin(tmp->right);
+                    _alloc.destroy(&tmp->data);
+                    _alloc.construct(&tmp->data, temp->data);
+                    my_erase(tmp->data.first, &tmp->right);
+                }
+            }
             Node    *new_node(value_type val)
             {
-                // std::cout << "val: " << val.first << " = " << val.second << std::endl;
                 Node    *new_node = _alloc_node.allocate(1);
                 _alloc.construct(&new_node->data, val);
                 new_node->right = NULL;
                 new_node->left = NULL;
-                //std::cout << "new node: " << new_node->data.first << " = " << new_node->data.second << std::endl;
                 return (new_node);
             }
             Node *search_bykey(key_type key, Node *tree)
@@ -440,8 +491,6 @@ namespace ft
                     return search_bykey(key, tree->right);
                 return (NULL);
             }
-
-
             Node    *getBegin(Node *tree) const
             {
                 if (!tree)

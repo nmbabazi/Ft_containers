@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:25:47 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/10 13:19:40 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/11 17:36:07 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ namespace ft
             return *this;
         }
 
-        T1  first;
+        T1 first;
         T2 second;
     };
     template <class T1, class T2>
