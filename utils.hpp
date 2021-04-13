@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 16:55:24 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/11 15:08:33 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/12 16:50:12 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
  * voir les verif a faire sur vector
  * justifier les operateur en friend ou en overload
  * check enable_if
- * checker mes pair*/
+ * checker mes pair
+ * check erase from map if map is begin-end */
 
 namespace ft{
     template <bool B, class T = void>  ////to check
