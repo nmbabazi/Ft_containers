@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:55:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/13 16:19:13 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/13 16:43:52 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,28 +238,27 @@ namespace ft
 			map (typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):_comp(comp), _alloc(alloc), _root(NULL),_end(NULL), _begin(NULL), _size(0)
 			{
                 initMap();
-                while (first != last)
-                    insert(first->first);
+                insert(first, last);
             }
 			map (const map& x):_comp(x._comp), _alloc(x._alloc), _root(NULL),_end(NULL), _begin(NULL), _size(0)
             {
                 initMap();
+                insert(x.begin(), x.end());
             }
 
 			~map()
             {
-                // clear();
-                // _alloc.destroy(&_end->data);
-                // _alloc.destroy(&_begin->data);
-                // _alloc_node.deallocate(_end, 1);
-                // _alloc_node.deallocate(_begin, 1);
+                clear();
+                _alloc.destroy(&_end->data);
+                _alloc.destroy(&_begin->data);
+                _alloc_node.deallocate(_end, 1);
+                _alloc_node.deallocate(_begin, 1);
             }
 
 			map& operator=(const map& x)
             {
-                const_iterator it = x.begin();
-                const_iterator rit = x.end();
-                insert(it, rit);
+                clear();
+                insert(x.begin(), x.end());
                 return (*this);
             }
 ///////////////////////iterator//////////////////////////////
