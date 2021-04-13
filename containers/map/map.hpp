@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:55:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/13 16:43:52 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/13 17:46:15 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ namespace ft
 	        typedef ptrdiff_t							difference_type; 
     		typedef size_t								size_type;
 			typedef Alloc								allocator_type;
+            
+            class value_compare{};
             
         private:
 			struct Node
@@ -135,6 +137,7 @@ namespace ft
 
                 ConstMapIterator(pointeur ptr = 0): _ptr(ptr){}
                 ConstMapIterator(MapIterator const &cp){_ptr = cp.get_ptr();}
+                ConstMapIterator(ConstMapIterator const &cp){_ptr = cp.get_ptr();}
                 ConstMapIterator operator=(ConstMapIterator const &cp)
                 { 
                     if (this != &cp)
@@ -340,18 +343,58 @@ namespace ft
             }
 /////////////////////observer///////////////////////////////        
 			key_compare key_comp() const{return _comp;}
-			key_compare value_comp() const; ///checker le retour 
+			value_compare value_comp() const;
 /////////////////////operation///////////////////////////////
-			iterator find (const key_type& k)
+			iterator find (const key_type& k){return iterator(search_bykey(k, _root));}
+			const_iterator find(const key_type& k) const {return const_iterator(search_bykey(k, _root));}
+			size_type count (const key_type& k) const
             {
-                return iterator(search_bykey(k, _root));
+                if (search_bykey(k, _root))
+                    return (1);
+                return (0);
             }
-			const_iterator find (const key_type& k) const;
-			size_type count (const key_type& k) const;
-			iterator lower_bound (const key_type& k);
-			const_iterator lower_bound (const key_type& k) const;
-			iterator upper_bound (const key_type& k);
-			const_iterator upper_bound (const key_type& k) const;
+			iterator lower_bound (const key_type& k)
+            {
+                Node *found = search_bykey(k, _root);
+                if (found)
+                    return iterator(found);
+                for (iterator it = begin(); it != end(); it++)
+                {
+                    if (_comp(it->first, k) || it->first == k)
+                        return it;
+                }
+                return iterator(NULL);
+            }
+			const_iterator lower_bound (const key_type& k) const
+            {
+                Node *found = search_bykey(k, _root);
+                if (found)
+                    return iterator(found);
+                for (iterator it = begin(); it != end(); it++)
+                {
+                    if (_comp(it->first, k) || it->first == k)
+                        return const_iterator(it);
+                }
+                return const_iterator(NULL);
+            }
+			iterator upper_bound (const key_type& k)
+            {
+                for (iterator it = begin(); it != end(); it++)
+                {
+                    if (!_comp(it->first, k) && it->first != k)
+                        return it;
+                }
+                return iterator(NULL);
+            }
+			const_iterator upper_bound (const key_type& k) const
+            {
+                for (iterator it = begin(); it != end(); it++)
+                {
+                    if (!_comp(it->first, k) && it->first != k)
+                        return const_iterator(it);
+                }
+                return const_iterator(NULL);
+            }
 			pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 			pair<iterator,iterator>             equal_range (const key_type& k);
 /////////////////////utiles///////////////////////////////
@@ -491,7 +534,7 @@ namespace ft
                 new_node->left = NULL;
                 return (new_node);
             }
-            Node *search_bykey(key_type key, Node *tree)
+            Node *search_bykey(key_type key, Node *tree) const
             {
                 if (tree == NULL)
                     return NULL;
