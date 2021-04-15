@@ -6,7 +6,7 @@
 /*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:55:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/15 11:21:30 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/15 16:41:19 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ namespace ft
                 ~MapIterator(){}
                 
                 value_type		&operator*()const {return _ptr->data;}
-                value_type       *operator->()const{return &(operator*());}
+                value_type       *operator->()const{return &(_ptr->data);}
                 MapIterator	&operator++(){_ptr = _ptr->getnext(); return *this;}
                 MapIterator	operator++(int){MapIterator it = *this; ++(*this); return it;}
                 MapIterator	&operator--(){ _ptr = _ptr->getprev(); return *this;}
@@ -159,7 +159,7 @@ namespace ft
                 ~ConstMapIterator(){}
                 
                 const_ref		operator*()const {return _ptr->data;}
-                value_type       *operator->()const{return &(operator*());}
+                value_type       *operator->()const{return &(_ptr->data);}
                 ConstMapIterator	&operator++(){_ptr = _ptr->getnext(); return *this;}
                 ConstMapIterator	operator++(int){ConstMapIterator it = *this; ++(*this); return it;}
                 ConstMapIterator	&operator--(){ _ptr = _ptr->getprev(); return *this;}
@@ -191,7 +191,7 @@ namespace ft
                 ~MapRIterator(){}
                 
                 value_type		&operator*()const {return _ptr->data;}
-                value_type       *operator->()const{return &(operator*());}
+                value_type       *operator->()const{return &(_ptr->data);}
                 MapRIterator	&operator++(){_ptr = _ptr->getprev(); return *this;}
                 MapRIterator	operator++(int){MapRIterator it = *this; ++(*this); return it;}
                 MapRIterator	&operator--(){ _ptr = _ptr->getnext(); return *this;}
@@ -225,10 +225,10 @@ namespace ft
                 ~ConstMapRIterator(){}
                 
                 const_ref		operator*()const {return _ptr->data();}
-                value_type       *operator->()const{return &(operator*());}
-                ConstMapRIterator	&operator++(){ return _ptr->getprev();}
+                value_type       *operator->()const{return &(_ptr->data);}
+                ConstMapRIterator	&operator++(){_ptr = _ptr->getprev(); return *this;}
                 ConstMapRIterator	operator++(int){ConstMapRIterator it = *this; ++(*this); return it;}
-                ConstMapRIterator	&operator--(){return _ptr->getnext();}
+                ConstMapRIterator	&operator--(){_ptr = _ptr->getnext(); return *this;}
                 ConstMapRIterator	operator--(int){ConstMapRIterator it = *this; --(*this); return it;}
                 pointeur            get_ptr()const{return _ptr;}
                 
@@ -348,6 +348,13 @@ namespace ft
                 ft::ft_swap(_end, x._end);
 				ft::ft_swap(_begin, x._begin);
                 ft::ft_swap(_comp, x._comp);
+                
+                // map tmp;
+                // tmp.insert(x.begin(), x.end());
+                // x.clear();
+                // x.insert(this->begin(), this->end());
+                // this->clear();
+                // this->insert(tmp.begin(), tmp.end());
             }
 			void clear()
             {
@@ -587,16 +594,31 @@ namespace ft
             }
             void    initMap()
             {
-                value_type val('1', mapped_type());
-                value_type va('0', mapped_type());
-                _end = new_node(val);
-                _begin = new_node(va);
+                // value_type val('7', mapped_type());
+                // value_type va('0', mapped_type());
+                _end = new_node(value_type());
+                _begin = new_node(value_type());
                 _end->right = _begin;
                 _end->left = NULL;
                 _begin->right = NULL;
                 _begin->left = _end;
             }
     };
+    template <class Key, class T, class Compare>
+    bool operator==(map<Key, T, Compare>& left, map<Key, T, Compare>& right)
+    {
+        typename map<Key, T, Compare>::iterator it = right.begin();
+
+        if (left.size() != right.size())
+            return false;
+        for (typename map<Key, T, Compare>::iterator i = left.begin(); i != left.end(); i++)
+        {
+            if (*i != *it)
+                return false;
+            it++;
+        }
+        return true;
+    }
 }
 
 #endif

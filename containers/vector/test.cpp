@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/04 09:59:36 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/15 11:29:02 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int main ()
 
         int i=0;
 
-        ft::vector<int>::r_iterator rit = myvector.rbegin();
+        ft::vector<int>::reverse_iterator rit = myvector.rbegin();
         for (; rit!= myvector.rend(); ++rit)
             *rit = ++i;
 
@@ -110,7 +110,7 @@ int main ()
         myvector.resize(8,100);
         myvector.resize(12);
         std::cout << "myvector contains(ft):";
-        for (int i=0;i<myvector.size();i++)
+        for (size_t i=0;i < myvector.size();i++)
             std::cout << ' ' << myvector[i];
         std::cout << '\n';
         std::cout << "myvector contains(stl): 1 2 3 4 5 100 100 100 0 0 0 0\n";
@@ -409,7 +409,6 @@ int main ()
     }
     std::cout << "\n\n ***************Test swap overload ***********\n\n";
     {
-        unsigned int i;
         ft::vector<int> foo (3,100);   // three ints with a value of 100
         ft::vector<int> bar (5,200);   // five ints with a value of 200
 

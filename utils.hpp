@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 16:55:24 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/13 16:59:06 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/15 11:44:00 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 # define UTILS_HPP
 
 /*****to do avant rendu:
- * checker les constructeur d'iterator de list et vector (pbm consti copy...)
- * operateur -> de list en cas d'inception
- * repasser les test cplusplus sur vector et list
+ * checker les constructeur d'iterator de list et vector (pbm constit copy...)
+ * operateur -> de list en cas d'inception ++++
  * voir les verif a faire sur vector
  * justifier les operateur en friend ou en overload
  * check enable_if

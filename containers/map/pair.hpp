@@ -6,7 +6,7 @@
 /*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:25:47 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/15 11:20:40 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/15 13:52:11 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,10 @@ namespace ft
     template <class T1, class T2>
     struct pair
     {
-
-        pair(const T1& k = T1(), const T2& val = T2()): first(k), second(val) {}
+        pair(): first(), second(){}
+        pair(const T1& k, const T2& val): first(k), second(val) {}
         template<class U, class V>
-        pair (const pair<U,V>& pr)
-        {
-            first = T1(pr.first);
-            second = T2(pr.second);
-        }
-
+        pair (const pair<U,V>& pr): first(pr.first), second(pr.second){}
         pair& operator= (const pair& pr)
         {
             if (this == &pr)

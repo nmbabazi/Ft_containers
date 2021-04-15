@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/06 13:48:39 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/15 13:09:22 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,15 @@ namespace ft
     		typedef ConstVectRIterator<T>   const_reverse_iterator;
             
         private:
-            allocator_type  _alloc;
             pointer         _vector;
-            size_type       _size;
+            allocator_type  _alloc;
             size_type       _capacity;
+            size_type       _size;
 ///////////////////////constructeur//////////////////////////////
         public:          
-            vector(const allocator_type& alloc = allocator_type()):_alloc(alloc),_size(0), _capacity(0){_vector = NULL;}
-            vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()):_alloc(alloc), _size(0), _capacity(0)
+            vector(const allocator_type& alloc = allocator_type()):_alloc(alloc), _capacity(0),_size(0){_vector = NULL;}
+            vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()):_alloc(alloc), _capacity(0),_size(0)
             {
-                //std::cout << "constructeur (valeur)\n";
                 _vector = _alloc.allocate(n);
                 for (size_type i = 0; i < n; i++)
                      push_back(val);
@@ -58,14 +57,13 @@ namespace ft
             template <class InputIterator>
             vector (typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last, const allocator_type& alloc = allocator_type()):_vector(NULL), _alloc(alloc),_capacity(0), _size(0)
             {
-                //std::cout << "constructeur (range)\n";
                 while(first != last)
                 {
                     push_back(*first);
                     first++;
                 }
             }
-            vector (const vector& x): _alloc(x._alloc), _size(0), _capacity(x._size)
+            vector (const vector& x): _alloc(x._alloc), _capacity(x._size), _size(0)
             {
                 _vector = _alloc.allocate(_capacity);
                 for (size_type i = 0; i < x._size; i++)
@@ -79,7 +77,6 @@ namespace ft
             }
             vector& operator=(const vector& x)
             {
-                //std::cout << "constructeur (assignation)\n";
                 if (_vector != NULL)
                     clear();
                 if (_capacity < x._capacity)
@@ -225,7 +222,7 @@ namespace ft
             void insert (iterator position, typename ft::Enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last)
             {
                 size_type n = 0;
-                for (iterator  count = first; count != last; count++)
+                for (InputIterator count = first; count != last; count++)
                         n++;  
                 vector tmp;
                 tmp.reserve(_capacity + n);
@@ -254,7 +251,6 @@ namespace ft
             }
             iterator erase (iterator first, iterator last)
             {
-                difference_type diff = last - first;
                 vector tmp;
                 tmp.reserve(_capacity);
                 iterator it = this->begin();
@@ -278,12 +274,12 @@ namespace ft
                 ft::ft_swap(_capacity, x._capacity);
             }
             
-            void printvector()                                  //////////////to delete////////////////////////////
-			{
-				for (size_type i = 0; i < _size; i++)
-					std::cout << "[" << *(_vector + i) << "] ";
-				std::cout << std::endl;
-			}
+            // void printvector()                                  //////////////to delete////////////////////////////
+			// {
+			// 	for (size_type i = 0; i < _size; i++)
+			// 		std::cout << "[" << *(_vector + i) << "] ";
+			// 	std::cout << std::endl;
+			// }
         /////////////////////overload///////////////////////////////
         friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
         {

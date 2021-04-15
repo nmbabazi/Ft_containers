@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/05 14:33:33 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/15 11:42:43 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int main ()
 		for (int i=1; i<=5; ++i) mylist.push_back(i);
 
 		std::cout << "mylist backwards(ft):";
-		for (ft::list<int>::r_iterator rit=mylist.rbegin(); rit!=mylist.rend(); ++rit)
+		for (ft::list<int>::reverse_iterator rit=mylist.rbegin(); rit!=mylist.rend(); ++rit)
 			std::cout << ' ' << *rit;
 		std::cout << '\n';
 		std::cout << "mylist backwards(std): 5 4 3 2 1\n";
@@ -146,13 +146,13 @@ int main ()
     }
 	std::cout << "\n\n ***************Test max_size***********\n\n";
     {
-		{unsigned int i;
+		{
 		ft::list<int> mylist;
 
 		for (int i=0; i<100; i++) mylist.push_back(i);
 		std::cout << "max_sizeft(ft): " << (int) mylist.max_size() << '\n';}
         std::cout << "-----------------------------" << std::endl;
-		{unsigned int i;
+		{
 		std::list<int> mylist;
 
 		for (int i=0; i<100; i++) mylist.push_back(i);
@@ -578,7 +578,6 @@ int main ()
 	}
 	std::cout << "\n\n ***************Test swap overload ***********\n\n";
     {
-        unsigned int i;
         ft::list<int> foo (3,100);   // three ints with a value of 100
         ft::list<int> bar (5,200);   // five ints with a value of 200
 
