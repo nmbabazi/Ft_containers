@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:55:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/13 17:46:15 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/15 11:21:30 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,19 @@ namespace ft
     		typedef size_t								size_type;
 			typedef Alloc								allocator_type;
             
-            class value_compare{};
+
+            class value_compare
+            {
+                friend class map;
+                protected:
+                    Compare comp;
+                    value_compare (Compare c) : comp(c) {}
+                public:
+                    bool operator() (const value_type& x, const value_type& y) const
+                    {
+                        return comp(x.first, y.first);
+                    }
+            };
             
         private:
 			struct Node
@@ -343,7 +355,7 @@ namespace ft
             }
 /////////////////////observer///////////////////////////////        
 			key_compare key_comp() const{return _comp;}
-			value_compare value_comp() const;
+			value_compare value_comp() const{return value_compare(_comp);}
 /////////////////////operation///////////////////////////////
 			iterator find (const key_type& k){return iterator(search_bykey(k, _root));}
 			const_iterator find(const key_type& k) const {return const_iterator(search_bykey(k, _root));}
@@ -363,7 +375,7 @@ namespace ft
                     if (_comp(it->first, k) || it->first == k)
                         return it;
                 }
-                return iterator(NULL);
+                return end();
             }
 			const_iterator lower_bound (const key_type& k) const
             {
@@ -375,7 +387,7 @@ namespace ft
                     if (_comp(it->first, k) || it->first == k)
                         return const_iterator(it);
                 }
-                return const_iterator(NULL);
+                return end();
             }
 			iterator upper_bound (const key_type& k)
             {
@@ -384,7 +396,7 @@ namespace ft
                     if (!_comp(it->first, k) && it->first != k)
                         return it;
                 }
-                return iterator(NULL);
+                return end();
             }
 			const_iterator upper_bound (const key_type& k) const
             {
@@ -393,10 +405,18 @@ namespace ft
                     if (!_comp(it->first, k) && it->first != k)
                         return const_iterator(it);
                 }
-                return const_iterator(NULL);
+                return end();
             }
-			pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
-			pair<iterator,iterator>             equal_range (const key_type& k);
+			pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+            {
+                pair<const_iterator,const_iterator> ret(const_iterator(lower_bound(k)), const_iterator(upper_bound(k)));
+                return ret;
+            }
+			pair<iterator,iterator>             equal_range (const key_type& k)
+            {
+                pair<iterator,iterator> ret(lower_bound(k), upper_bound(k));
+                return ret;
+            }
 /////////////////////utiles///////////////////////////////
         private:
             Node    *my_insert(value_type val, Node **tree)

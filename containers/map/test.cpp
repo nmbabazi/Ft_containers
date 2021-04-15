@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/13 17:46:33 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/15 11:21:42 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,42 +31,42 @@ struct classcomp {
 
 int main()
 {
-	// std::cout << "\n\n ***************Test pair***********\n\n";
-	// {
-	// 	{
-	// 	ft::pair <std::string,double> product1;                     // default constructor
-	// 	ft::pair <std::string,double> product2 ("tomatoes",2.30);   // value init
-	// 	ft::pair <std::string,double> product3 (product2);
-	// 	ft::pair <std::string,double> product4 (std::string("lightbulbs"),0.99); 
+	std::cout << "\n\n ***************Test pair***********\n\n";
+	{
+		{
+		ft::pair <std::string,double> product1;                     // default constructor
+		ft::pair <std::string,double> product2 ("tomatoes",2.30);   // value init
+		ft::pair <std::string,double> product3 (product2);
+		ft::pair <std::string,double> product4 (std::string("lightbulbs"),0.99); 
 
-	// 	product1 = product4;
+		product1 = product4;
 
-	// 	product2.first = "shoes";                  // the type of first is string
-	// 	product2.second = 39.90;                   // the type of second is double
+		product2.first = "shoes";                  // the type of first is string
+		product2.second = 39.90;                   // the type of second is double
 
-	// 	std::cout << "(ft)The price of " << product1.first << " is $" << product1.second << '\n';
-	// 	std::cout << "(ft)The price of " << product2.first << " is $" << product2.second << '\n';
-	// 	std::cout << "(ft)The price of " << product3.first << " is $" << product3.second << '\n';
+		std::cout << "(ft)The price of " << product1.first << " is $" << product1.second << '\n';
+		std::cout << "(ft)The price of " << product2.first << " is $" << product2.second << '\n';
+		std::cout << "(ft)The price of " << product3.first << " is $" << product3.second << '\n';
 
-	// 	}
-	// std::cout << "-----------------------------" << std::endl;
-	// 	{
-	// 	std::pair <std::string,double> product1;                     // default constructor
-	// 	std::pair <std::string,double> product2 ("tomatoes",2.30);   // value init
-	// 	std::pair <std::string,double> product3 (product2);
-	// 	std::pair <std::string,double> product4 (std::string("lightbulbs"),0.99); 
+		}
+	std::cout << "-----------------------------" << std::endl;
+		{
+		std::pair <std::string,double> product1;                     // default constructor
+		std::pair <std::string,double> product2 ("tomatoes",2.30);   // value init
+		std::pair <std::string,double> product3 (product2);
+		std::pair <std::string,double> product4 (std::string("lightbulbs"),0.99); 
 
-	// 	product1 = product4;
+		product1 = product4;
 
-	// 	product2.first = "shoes";                  // the type of first is string
-	// 	product2.second = 39.90;                   // the type of second is double
+		product2.first = "shoes";                  // the type of first is string
+		product2.second = 39.90;                   // the type of second is double
 
-	// 	std::cout << "(stl)The price of " << product1.first << " is $" << product1.second << '\n';
-	// 	std::cout << "(stl)The price of " << product2.first << " is $" << product2.second << '\n';
-	// 	std::cout << "(stl)The price of " << product3.first << " is $" << product3.second << '\n';
+		std::cout << "(stl)The price of " << product1.first << " is $" << product1.second << '\n';
+		std::cout << "(stl)The price of " << product2.first << " is $" << product2.second << '\n';
+		std::cout << "(stl)The price of " << product3.first << " is $" << product3.second << '\n';
 
-	// 	}
-	// }
+		}
+	}
 
 	std::cout << "\n\n ***************Test constructeur***********\n\n";
 	{
@@ -483,8 +483,40 @@ int main()
 	}
 	std::cout << "\n\n ***************Test value_comp***********\n\n";
 	{
+		{
+		ft::map<char,int> mymap;
+
+		mymap['x']=1001;
+		mymap['y']=2002;
+		mymap['z']=3003;
+
+		std::cout << "mymap contains:\n";
+
+		ft::pair<const char,int> highest = *mymap.rbegin();          // last element
+
+		ft::map<char,int>::iterator it = mymap.begin();
+		do {
+			std::cout << it->first << " => " << it->second << '\n';
+		} while ( mymap.value_comp()(*it++, highest) );
+		}
 
 		std::cout << "-----------------------------" << std::endl << "stl\n";
+		{
+		std::map<char,int> mymap;
+
+		mymap['x']=1001;
+		mymap['y']=2002;
+		mymap['z']=3003;
+
+		std::cout << "mymap contains:\n";
+
+		std::pair<char,int> highest = *mymap.rbegin();          // last element
+
+		std::map<char,int>::iterator it = mymap.begin();
+		do {
+			std::cout << it->first << " => " << it->second << '\n';
+		} while ( mymap.value_comp()(*it++, highest) );
+		}
 
 	}
 	std::cout << "\n\n ***************Test find***********\n\n";
@@ -614,5 +646,43 @@ int main()
 			std::cout << it->first << " => " << it->second << '\n';
 		}
 
+	}
+		std::cout << "\n\n ***************Test equal_range***********\n\n";
+	{
+		{
+		ft::map<char,int> mymap;
+
+		mymap['a']=10;
+		mymap['b']=20;
+		mymap['c']=30;
+
+		ft::pair<ft::map<char,int>::iterator,ft::map<char,int>::iterator> ret;
+		ret = mymap.equal_range('b');
+
+		std::cout << "lower bound points to: ";
+		std::cout << ret.first->first << " => " << ret.first->second << '\n';
+
+		std::cout << "upper bound points to: ";
+		std::cout << ret.second->first << " => " << ret.second->second << '\n';
+		}
+
+		std::cout << "-----------------------------" << std::endl << "stl\n";
+
+		{
+		std::map<char,int> mymap;
+
+		mymap['a']=10;
+		mymap['b']=20;
+		mymap['c']=30;
+
+		std::pair<std::map<char,int>::iterator,std::map<char,int>::iterator> ret;
+		ret = mymap.equal_range('b');
+
+		std::cout << "lower bound points to: ";
+		std::cout << ret.first->first << " => " << ret.first->second << '\n';
+
+		std::cout << "upper bound points to: ";
+		std::cout << ret.second->first << " => " << ret.second->second << '\n';
+		}
 	}
 }
