@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/12 14:33:18 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/15 17:24:30 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,6 +353,8 @@ namespace ft
             {
                 ft::ft_swap(_size, x._size);
 				ft::ft_swap(_list, x._list);
+                ft::ft_swap(_alloc, x._alloc;
+                ft::ft_swap(_alloc_node, x._alloc_node);
             }
             void resize (size_type n, value_type val = value_type())
             {

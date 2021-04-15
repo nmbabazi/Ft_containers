@@ -6,7 +6,7 @@
 /*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/15 11:21:42 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/15 17:58:24 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -684,5 +684,87 @@ int main()
 		std::cout << "upper bound points to: ";
 		std::cout << ret.second->first << " => " << ret.second->second << '\n';
 		}
+	}
+	std::cout << "\n\n ***************Test swap***********\n\n";
+	{
+		{
+		ft::map<char,int> foo,bar;
+
+		foo['x']=100;
+		foo['y']=200;
+
+		bar['a']=11;
+		bar['b']=22;
+		bar['c']=33;
+
+		swap(foo,bar);
+
+		std::cout << "foo contains:\n";
+		for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+
+		std::cout << "bar contains:\n";
+		for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+		}
+
+		std::cout << "-----------------------------" << std::endl << "stl\n";
+		{
+		std::map<char,int> foo,bar;
+
+		foo['x']=100;
+		foo['y']=200;
+
+		bar['a']=11;
+		bar['b']=22;
+		bar['c']=33;
+
+		swap(foo,bar);
+
+		std::cout << "foo contains:\n";
+		for (std::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+
+		std::cout << "bar contains:\n";
+		for (std::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+		}
+
+	}
+	std::cout << "\n\n ***************Test relational operators***********\n\n";
+	{
+		{
+		ft::map<char,int> foo,bar;
+		foo['a']=100;
+		foo['b']=200;
+		bar['a']=10;
+		bar['z']=1000;
+
+		// foo ({{a,100},{b,200}}) vs bar ({a,10},{z,1000}}):
+		if (foo==bar) std::cout << "foo and bar are equal\n";
+		if (foo!=bar) std::cout << "foo and bar are not equal\n";
+		if (foo< bar) std::cout << "foo is less than bar\n";
+		if (foo> bar) std::cout << "foo is greater than bar\n";
+		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+		}
+
+		std::cout << "-----------------------------" << std::endl << "stl\n";
+		{
+		std::map<char,int> foo,bar;
+		foo['a']=100;
+		foo['b']=200;
+		bar['a']=10;
+		bar['z']=1000;
+
+		// foo ({{a,100},{b,200}}) vs bar ({a,10},{z,1000}}):
+		if (foo==bar) std::cout << "foo and bar are equal\n";
+		if (foo!=bar) std::cout << "foo and bar are not equal\n";
+		if (foo< bar) std::cout << "foo is less than bar\n";
+		if (foo> bar) std::cout << "foo is greater than bar\n";
+		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+		}
+
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:55:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/15 16:41:19 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/15 19:00:11 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ namespace ft
                     if (isleaf() || this->left == NULL)
                     { 
                         ret = this->parent;
-                        while (ret->data.first > this->data.first && this->data.first)
+                        while (ret->data.first > this->data.first && (this->data.first != key_type()))
                             ret = ret->parent;
                         return (ret); 
                     }
@@ -85,7 +85,7 @@ namespace ft
                     if (isleaf() || this->right == NULL)
                     {  
                         ret = this->parent;
-                        while (ret->data.first < this->data.first && this->data.first)
+                        while (ret->data.first < this->data.first && (this->data.first != key_type()))
                             ret = ret->parent;
                         return (ret); 
                     }
@@ -127,9 +127,9 @@ namespace ft
                 value_type		&operator*()const {return _ptr->data;}
                 value_type       *operator->()const{return &(_ptr->data);}
                 MapIterator	&operator++(){_ptr = _ptr->getnext(); return *this;}
-                MapIterator	operator++(int){MapIterator it = *this; ++(*this); return it;}
+                MapIterator	operator++(int){MapIterator it = *this; _ptr = _ptr->getnext(); return it;}
                 MapIterator	&operator--(){ _ptr = _ptr->getprev(); return *this;}
-                MapIterator	operator--(int){MapIterator it = *this; --(*this); return it;}
+                MapIterator	operator--(int){MapIterator it = *this; _ptr = _ptr->getprev(); return it;}
                 pointeur        get_ptr()const{return _ptr;}
 
                 bool			operator==(const MapIterator &it){ return _ptr == it.get_ptr();}
@@ -161,9 +161,9 @@ namespace ft
                 const_ref		operator*()const {return _ptr->data;}
                 value_type       *operator->()const{return &(_ptr->data);}
                 ConstMapIterator	&operator++(){_ptr = _ptr->getnext(); return *this;}
-                ConstMapIterator	operator++(int){ConstMapIterator it = *this; ++(*this); return it;}
+                ConstMapIterator	operator++(int){ConstMapIterator it = *this;  _ptr = _ptr->getnext(); return it;}
                 ConstMapIterator	&operator--(){ _ptr = _ptr->getprev(); return *this;}
-                ConstMapIterator	operator--(int){ConstMapIterator it = *this; --(*this); return it;}
+                ConstMapIterator	operator--(int){ConstMapIterator it = *this; _ptr = _ptr->getprev(); return it;}
                 pointeur            get_ptr()const{return _ptr;}
                 
                 bool			operator==(const ConstMapIterator &it){ return _ptr == it.get_ptr();}
@@ -193,9 +193,9 @@ namespace ft
                 value_type		&operator*()const {return _ptr->data;}
                 value_type       *operator->()const{return &(_ptr->data);}
                 MapRIterator	&operator++(){_ptr = _ptr->getprev(); return *this;}
-                MapRIterator	operator++(int){MapRIterator it = *this; ++(*this); return it;}
+                MapRIterator	operator++(int){MapRIterator it = *this; _ptr = _ptr->getprev(); return it;}
                 MapRIterator	&operator--(){ _ptr = _ptr->getnext(); return *this;}
-                MapRIterator	operator--(int){MapRIterator it = *this; --(*this); return it;}
+                MapRIterator	operator--(int){MapRIterator it = *this; _ptr = _ptr->getnext(); return it;}
                 pointeur        get_ptr()const{return _ptr;}
 
                 bool			operator==(const MapRIterator &it){ return _ptr == it.get_ptr();}
@@ -227,9 +227,9 @@ namespace ft
                 const_ref		operator*()const {return _ptr->data();}
                 value_type       *operator->()const{return &(_ptr->data);}
                 ConstMapRIterator	&operator++(){_ptr = _ptr->getprev(); return *this;}
-                ConstMapRIterator	operator++(int){ConstMapRIterator it = *this; ++(*this); return it;}
+                ConstMapRIterator	operator++(int){ConstMapRIterator it = *this; _ptr = _ptr->getprev(); return it;}
                 ConstMapRIterator	&operator--(){_ptr = _ptr->getnext(); return *this;}
-                ConstMapRIterator	operator--(int){ConstMapRIterator it = *this; --(*this); return it;}
+                ConstMapRIterator	operator--(int){ConstMapRIterator it = *this; _ptr = _ptr->getnext(); return it;}
                 pointeur            get_ptr()const{return _ptr;}
                 
                 bool			operator==(const ConstMapRIterator &it){ return _ptr == it.get_ptr();}
@@ -344,17 +344,12 @@ namespace ft
 			void swap (map& x)
             {
                 ft::ft_swap(_size, x._size);
-				ft::ft_swap(_root, x._root);
+                ft::ft_swap(_root, x._root);
                 ft::ft_swap(_end, x._end);
 				ft::ft_swap(_begin, x._begin);
                 ft::ft_swap(_comp, x._comp);
-                
-                // map tmp;
-                // tmp.insert(x.begin(), x.end());
-                // x.clear();
-                // x.insert(this->begin(), this->end());
-                // this->clear();
-                // this->insert(tmp.begin(), tmp.end());
+                ft::ft_swap(_alloc, x._alloc);
+                ft::ft_swap(_alloc_node, x._alloc_node);
             }
 			void clear()
             {
@@ -379,7 +374,7 @@ namespace ft
                     return iterator(found);
                 for (iterator it = begin(); it != end(); it++)
                 {
-                    if (_comp(it->first, k) || it->first == k)
+                    if (!_comp(it->first, k) || it->first == k)
                         return it;
                 }
                 return end();
@@ -391,7 +386,7 @@ namespace ft
                     return iterator(found);
                 for (iterator it = begin(); it != end(); it++)
                 {
-                    if (_comp(it->first, k) || it->first == k)
+                    if (!_comp(it->first, k) || it->first == k)
                         return const_iterator(it);
                 }
                 return end();
@@ -400,7 +395,7 @@ namespace ft
             {
                 for (iterator it = begin(); it != end(); it++)
                 {
-                    if (!_comp(it->first, k) && it->first != k)
+                    if (_comp(k, it->first) && it->first != k)
                         return it;
                 }
                 return end();
@@ -409,7 +404,7 @@ namespace ft
             {
                 for (iterator it = begin(); it != end(); it++)
                 {
-                    if (!_comp(it->first, k) && it->first != k)
+                    if (_comp(k, it->first) && it->first != k)
                         return const_iterator(it);
                 }
                 return end();
@@ -594,8 +589,6 @@ namespace ft
             }
             void    initMap()
             {
-                // value_type val('7', mapped_type());
-                // value_type va('0', mapped_type());
                 _end = new_node(value_type());
                 _begin = new_node(value_type());
                 _end->right = _begin;
@@ -603,22 +596,60 @@ namespace ft
                 _begin->right = NULL;
                 _begin->left = _end;
             }
-    };
-    template <class Key, class T, class Compare>
-    bool operator==(map<Key, T, Compare>& left, map<Key, T, Compare>& right)
-    {
-        typename map<Key, T, Compare>::iterator it = right.begin();
-
-        if (left.size() != right.size())
-            return false;
-        for (typename map<Key, T, Compare>::iterator i = left.begin(); i != left.end(); i++)
+        public:
+        friend void	swap(map<Key, T, Compare>& x, map<Key, T, Compare>& y)
         {
-            if (*i != *it)
-                return false;
-            it++;
+            x.swap(y);
         }
-        return true;
-    }
+
+		friend bool operator==(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
+		{
+			if (lhs._size != rhs._size)
+                return false;
+            const_iterator lit = lhs.begin();
+            const_iterator rit = rhs.begin();
+            while (lit != lhs.end())
+            {
+                if (*lit++ != *rit++)
+                    return false;
+            }
+			return true;
+		}
+        friend bool operator!=(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs){ return !(lhs == rhs);}
+        friend bool operator<(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
+        {	
+            const_iterator lit = lhs.begin();
+		    const_iterator rit = rhs.begin();
+		    while (lit != lhs.end())
+		    {
+			    if (rit == rhs.end() || *rit < *lit)
+				    return false;
+			    else if (*lit < *rit)
+				    return true;
+			    ++lit;
+			    ++rit;
+		    }
+		    return rit != rhs.end();
+        }
+        friend bool operator<=(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
+        { 
+            if (lhs == rhs || lhs < rhs)
+                return true;
+            return false;
+        }
+		friend bool operator>(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
+        { 
+            if (!(lhs == rhs) && !(lhs < rhs)) 
+                return true;
+            return false;
+        }
+		friend bool operator>=(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
+        { 
+            if (lhs == rhs || lhs > rhs)
+                return true;
+            return false;
+        }
+    };
 }
 
 #endif
