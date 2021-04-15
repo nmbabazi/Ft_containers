@@ -6,7 +6,7 @@
 /*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:55:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/15 19:00:11 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/15 21:49:13 by nailambz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -484,7 +484,10 @@ namespace ft
             {
                 if (!*tree)
                     return ;
-                if (_size == 1)
+                Node *tmp = search_bykey(val, *tree);
+                if (!tmp)
+                    return ;
+                if (_size == 1 && tmp == _root)
                 {
                     _alloc.destroy(&_root->data);
                     _alloc_node.deallocate(_root, 1);
@@ -493,9 +496,6 @@ namespace ft
                     _size--;
                     return ;
                 }
-                Node *tmp = search_bykey(val, *tree);
-                if (!tmp)
-                    return ;
                 else if (tmp->left == NULL && tmp->right == NULL)
                 {
                     if(tmp->parent->right == tmp)
