@@ -16,6 +16,7 @@
 #include <memory>
 #include <iostream>
 #include <limits>
+#include <cstddef>
 #include "../../allocator.hpp"
 #include "../../utils.hpp"
 
@@ -216,11 +217,17 @@ namespace ft
             ~list()
             {
                 clear();
+                _alloc.destroy(&_list->data);
+                _alloc_node.deallocate(_list,1);
             }
             list& operator= (const list& x)
             {
                 if (_list != NULL)
+                {
                     clear();
+                    _alloc.destroy(&_list->data);
+                    _alloc_node.deallocate(_list,1);
+                }                
                 creatList();
                 for(const_iterator start = x.begin(); start != x.end(); start++)
                     push_back(*start);
@@ -399,19 +406,25 @@ namespace ft
             }
             void remove (const value_type& val)
             {
-                for (iterator it = begin(); it != end(); it++)
+                iterator it = begin();
+                while (it != end())
                 {
                     if (*it == val)
-                        erase(it);
+                        it = erase(it);
+                    else
+                       it++; 
                 }
             }
             template <class Predicate>
             void remove_if (Predicate pred)
             {
-                for (iterator it = begin(); it != end(); it++)
+                iterator it = begin();
+                while (it != end())
                 {
                     if (pred(*it))
-                        erase(it);
+                        it = erase(it);
+                    else
+                        it++;
                 }
             }
             void unique()
