@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/16 11:19:10 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/16 11:26:32 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ namespace ft
             typedef ConstListIterator   const_iterator;
             typedef ListRIterator        reverse_iterator;
             typedef ConstListRIterator   const_reverse_iterator;
-
+///////////////////////constructors//////////////////////////
             list (const allocator_type& alloc = allocator_type()):_alloc(alloc), _size(0){creatList();}
             list (size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type()):_alloc(alloc), _size(0)
             {
@@ -225,14 +225,6 @@ namespace ft
                 for(const_iterator start = x.begin(); start != x.end(); start++)
                     push_back(*start);
                 return *this;
-            }
-
-            void    creatList()
-            {
-                _list = _alloc_node.allocate(1);
-                _alloc.construct(&_list->data, value_type());
-                _list->next = _list;
-                _list->prev = _list;
             }
 ///////////////////////iterator//////////////////////////////
             iterator begin(){return iterator(_list->next);} //// heuuuuu?!
@@ -522,7 +514,16 @@ namespace ft
 				}
 
             }
+        private:
+            void    creatList()
+            {
+                _list = _alloc_node.allocate(1);
+                _alloc.construct(&_list->data, value_type());
+                _list->next = _list;
+                _list->prev = _list;
+            }
 /////////////////////relational operators///////////////////////////////
+        public:
         friend bool operator==(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
         {
             if (lhs._size != rhs._size)
@@ -582,5 +583,4 @@ namespace ft
         x.swap(y);
     }
 }
-
 #endif
