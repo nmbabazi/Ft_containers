@@ -44,7 +44,7 @@ namespace ft
                 this->_container = cp._container;
             return *this;
         }
-        ~queue(){_container.~container_type();}
+        ~queue(){}
         bool empty() const{return _container.empty();}
         size_type size() const{return _container.size();}
         value_type& front(){return _container.front();}

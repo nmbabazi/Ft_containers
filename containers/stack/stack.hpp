@@ -43,7 +43,7 @@ namespace ft
                 this->_container = cp._container;
             return *this;
         }
-        ~stack(){_container.~container_type();}
+        ~stack(){}
         bool empty() const{return _container.empty();}
         size_type size() const{return _container.size();}
         value_type& top(){return _container.back();}
