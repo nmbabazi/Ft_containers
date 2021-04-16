@@ -6,17 +6,12 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 16:55:24 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/16 10:53:40 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/16 13:18:31 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_HPP
 # define UTILS_HPP
-
-/*****to do avant rendu
- * rendre un main.cpp pour chaque container
- * checker les friends de map
- * tout mes classe sont canonique?*/
 
 namespace ft{
     template <bool B, class T = void>
