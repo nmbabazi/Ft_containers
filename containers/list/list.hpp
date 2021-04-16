@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/16 10:49:43 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/16 11:19:10 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ namespace ft
                 ~ListIterator(){}
                 
                 value_type		&operator*()const {return _ptr->data;}
-                pointeur        operator->()const{return _ptr;}
+                value_type      *operator->()const{return &(_ptr->data);}
                 ListIterator	&operator++(){_ptr = _ptr->next; return *this;}
                 ListIterator	operator++(int){ListIterator it = *this; _ptr = _ptr->next; return it;}
                 ListIterator	&operator--(){ _ptr = _ptr->prev; return *this;}
@@ -101,7 +101,7 @@ namespace ft
                 ~ConstListIterator(){}
                 
                 const_ref		operator*()const {return _ptr->data;}
-                pointeur        operator->()const{return _ptr;}
+                const_pointeur        operator->()const{return &(_ptr->data);}
                 ConstListIterator	&operator++(){_ptr = _ptr->next; return *this;}
                 ConstListIterator	operator++(int){ConstListIterator it = *this; _ptr = _ptr->next; return it;}
                 ConstListIterator	&operator--(){ _ptr = _ptr->prev; return *this;}
@@ -133,7 +133,7 @@ namespace ft
                 ~ListRIterator(){}
                 
                 value_type		&operator*()const {return _ptr->data;}
-                pointeur        operator->()const{return _ptr;}
+                value_type      *operator->()const{return &(_ptr->data);}
                 ListRIterator	&operator++(){_ptr = _ptr->prev; return *this;}
                 ListRIterator	operator++(int){ListRIterator it = *this; _ptr = _ptr->prev; return it;}
                 ListRIterator	&operator--(){ _ptr = _ptr->next; return *this;}
@@ -168,8 +168,8 @@ namespace ft
                 }
                 ~ConstListRIterator(){}
                 
-                const_ref		operator*()const {return _ptr->data;}
-                pointeur        operator->()const{return _ptr;}
+                const_ref		    operator*()const {return _ptr->data;}
+                const_pointeur       operator->()const{return &(_ptr->data);}
                 ConstListRIterator	&operator++(){_ptr = _ptr->prev; return *this;}
                 ConstListRIterator	operator++(int){ConstListRIterator it = *this; _ptr = _ptr->prev; return it;}
                 ConstListRIterator	&operator--(){ _ptr = _ptr->next; return *this;}
@@ -382,21 +382,21 @@ namespace ft
             {
                 for (iterator it = x.begin(); it != x.end();)
                 {
-                    iterator next = it->next;
+                    iterator next = it.get_ptr()->next;
                     splice(position, x, it);
                     it = next;
                 }
             }
             void splice (iterator position, list& x, iterator i)
             {
-                i->prev->next = i->next;
-                i->next->prev = i->prev;
+                i.get_ptr()->prev->next = i.get_ptr()->next;
+                i.get_ptr()->next->prev = i.get_ptr()->prev;
                 
-                i->prev = position->prev;
-                i->next = position.get_ptr();
+                i.get_ptr()->prev = position.get_ptr()->prev;
+                i.get_ptr()->next = position.get_ptr();
                 
-                position->prev->next = i.get_ptr();
-                position->prev = i.get_ptr();
+                position.get_ptr()->prev->next = i.get_ptr();
+                position.get_ptr()->prev = i.get_ptr();
                 _size++;
                 x._size--;
             }	
@@ -424,9 +424,9 @@ namespace ft
             }
             void unique()
             {
-                for (iterator it(begin()->next); it!= end(); it++)
+                for (iterator it(begin().get_ptr()->next); it!= end(); it++)
                 {
-                    if (*it == it->prev->data)
+                    if (*it == it.get_ptr()->prev->data)
                         erase(it--);
                 }
             }
@@ -434,9 +434,9 @@ namespace ft
             void unique (BinaryPredicate binary_pred)
             {
                 
-                for (iterator it(begin()->next); it!= end(); it++)
+                for (iterator it(begin().get_ptr()->next); it!= end(); it++)
                 {
-                    if (binary_pred(*it, it->prev->data))
+                    if (binary_pred(*it, it.get_ptr()->prev->data))
                         erase(it--);
                 }
             }
@@ -459,21 +459,21 @@ namespace ft
             {
                 for (iterator start = begin(); start != end();)
                 {							
-					iterator hold = start->next;		
-					for (iterator it = begin()->next; it != end();)
+					iterator hold = start.get_ptr()->next;		
+					for (iterator it = begin().get_ptr()->next; it != end();)
                     {
-						iterator nxt = it->next;
-						iterator prv = it->prev;
+						iterator nxt = it.get_ptr()->next;
+						iterator prv = it.get_ptr()->prev;
 						if (*it < *prv){
-                            Node* tmp= it->next;
-							it->next->prev = prv.get_ptr();
+                            Node* tmp= it.get_ptr()->next;
+							it.get_ptr()->next->prev = prv.get_ptr();
 							
-							it->next = prv.get_ptr();
-							it->prev = prv->prev;
+							it.get_ptr()->next = prv.get_ptr();
+							it.get_ptr()->prev = prv.get_ptr()->prev;
 							
-							prv->prev->next = it.get_ptr();
-							prv->prev = it.get_ptr();
-							prv->next = tmp;
+							prv.get_ptr()->prev->next = it.get_ptr();
+							prv.get_ptr()->prev = it.get_ptr();
+							prv.get_ptr()->next = tmp;
 						}
 						it = nxt;
 					}
@@ -485,21 +485,21 @@ namespace ft
             {
                 for (iterator start = begin(); start != end();)
                 {							
-					iterator hold = start->next;		
-					for (iterator it = begin()->next; it != end();)
+					iterator hold = start.get_ptr()->next;		
+					for (iterator it = begin().get_ptr()->next; it != end();)
                     {
-						iterator nxt = it->next;
-						iterator prv = it->prev;
+						iterator nxt = it.get_ptr()->next;
+						iterator prv = it.get_ptr()->prev;
 						if (comp(*it, *prv)){
-                            Node* tmp= it->next;
-							it->next->prev = prv.get_ptr();
+                            Node* tmp= it.get_ptr()->next;
+							it.get_ptr()->next->prev = prv.get_ptr();
 							
-							it->next = prv.get_ptr();
-							it->prev = prv->prev;
+							it.get_ptr()->next = prv.get_ptr();
+							it.get_ptr()->prev = prv.get_ptr()->prev;
 							
-							prv->prev->next = it.get_ptr();
-							prv->prev = it.get_ptr();
-							prv->next = tmp;
+							prv.get_ptr()->prev->next = it.get_ptr();
+							prv.get_ptr()->prev = it.get_ptr();
+							prv.get_ptr()->next = tmp;
 						}
 						it = nxt;
 					}
@@ -515,9 +515,9 @@ namespace ft
 				_list->prev = tmp;
                 for (size_type i = 0; i < _size; i++)
                 {	
-                    iterator nxt = first->next;
-                    first->next = first->prev;
-                    first->prev = nxt.get_ptr();
+                    iterator nxt = first.get_ptr()->next;
+                    first.get_ptr()->next = first.get_ptr()->prev;
+                    first.get_ptr()->prev = nxt.get_ptr();
                     first = nxt;                 
 				}
 
