@@ -3,27 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 16:55:24 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/15 11:44:00 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/16 10:53:40 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_HPP
 # define UTILS_HPP
 
-/*****to do avant rendu:
- * checker les constructeur d'iterator de list et vector (pbm constit copy...)
- * operateur -> de list en cas d'inception ++++
- * voir les verif a faire sur vector
- * justifier les operateur en friend ou en overload
- * check enable_if
- * checker mes pair
+/*****to do avant rendu
+ * rendre un main.cpp pour chaque container
+ * checker les friends de map
  * tout mes classe sont canonique?*/
 
 namespace ft{
-    template <bool B, class T = void>  ////to check
+    template <bool B, class T = void>
     struct Enable_if
     {
     };

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:55:28 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/15 21:49:13 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/16 10:54:41 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace ft
 
             class value_compare
             {
-                friend class map;
+                friend class map; // pour que map puisse acceder a comp qui est protected 
                 protected:
                     Compare comp;
                     value_compare (Compare c) : comp(c) {}
@@ -215,7 +215,9 @@ namespace ft
 
                 ConstMapRIterator(pointeur ptr = 0): _ptr(ptr){}
                 ConstMapRIterator(MapRIterator const &cp){_ptr = cp.get_ptr();}
+                ConstMapRIterator(ConstMapRIterator const &cp){_ptr = cp.get_ptr();}
                 ConstMapRIterator(MapIterator const &cp){_ptr = cp.get_ptr()->prev;}
+                ConstMapRIterator(ConstMapIterator const &cp){_ptr = cp.get_ptr()->prev;}
                 ConstMapRIterator operator=(ConstMapRIterator const &cp)
                 { 
                     if (this != &cp)
@@ -487,7 +489,7 @@ namespace ft
                 Node *tmp = search_bykey(val, *tree);
                 if (!tmp)
                     return ;
-                if (_size == 1 && tmp == _root)
+                if (_size == 1)
                 {
                     _alloc.destroy(&_root->data);
                     _alloc_node.deallocate(_root, 1);
@@ -601,7 +603,6 @@ namespace ft
         {
             x.swap(y);
         }
-
 		friend bool operator==(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
 		{
 			if (lhs._size != rhs._size)

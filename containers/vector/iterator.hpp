@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/06 14:22:24 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/16 10:13:15 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ namespace ft
 
         ConstVectIterator(pointeur ptr = 0): _ptr(ptr){}
         ConstVectIterator(VectIterator<T> const &cp){ _ptr = cp.get_ptr();}
+        ConstVectIterator(ConstVectIterator<T> const &cp){ _ptr = cp.get_ptr();}
         ConstVectIterator operator=(ConstVectIterator const &cp)
         { 
             if (this != &cp)
@@ -164,9 +165,9 @@ namespace ft
         value_type		*operator->()const{return _ptr;}
         value_type		operator[](int n)const{return *(_ptr + n);}
         VectRIterator	&operator++(){_ptr--; return *this;}
-        VectRIterator	operator++(int){VectRIterator it = *this; ++(*this); return it;}
+        VectRIterator	operator++(int){VectRIterator it = *this; --(*this); return it;}
         VectRIterator	&operator--(){ _ptr++; return *this;}
-        VectRIterator	operator--(int){VectRIterator it = *this; --(*this); return it;}
+        VectRIterator	operator--(int){VectRIterator it = *this; ++(*this); return it;}
         value_type      *get_ptr()const{return _ptr;}
 
         bool			operator==(const VectRIterator &it){ return _ptr == it.get_ptr();}
@@ -193,7 +194,9 @@ namespace ft
 
         ConstVectRIterator(pointeur ptr = 0): _ptr(ptr){}
         ConstVectRIterator(VectRIterator<T> const &cp){ _ptr = cp.get_ptr();}
+        ConstVectRIterator(ConstVectRIterator<T> const &cp){ _ptr = cp.get_ptr();}
         ConstVectRIterator(VectIterator<T> const &cp){ _ptr = cp.get_ptr();}
+        ConstVectRIterator(ConstVectIterator<T> const &cp){ _ptr = cp.get_ptr();}
         ConstVectRIterator operator=(ConstVectRIterator const &cp)
         { if (this != &cp)
                 this->_ptr = cp.get_ptr();
@@ -220,9 +223,9 @@ namespace ft
         const_pointer   operator->()const{return _ptr;}
         value_type		operator[](int n)const{return *(_ptr + n);}
         ConstVectRIterator	&operator++(){_ptr--; return *this;}
-        ConstVectRIterator	operator++(int){ConstVectRIterator it = *this; ++(*this); return it;}
+        ConstVectRIterator	operator++(int){ConstVectRIterator it = *this; --(*this); return it;}
         ConstVectRIterator	&operator--(){ _ptr++; return *this;}
-        ConstVectRIterator	operator--(int){ConstVectRIterator it = *this; --(*this); return it;}
+        ConstVectRIterator	operator--(int){ConstVectRIterator it = *this; ++(*this); return it;}
         pointeur            get_ptr()const{return _ptr;}
 
         bool			operator==(const ConstVectRIterator &it){ return _ptr == it.get_ptr();}

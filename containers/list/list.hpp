@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/15 17:24:30 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/16 10:49:43 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ namespace ft
                 value_type		&operator*()const {return _ptr->data;}
                 pointeur        operator->()const{return _ptr;}
                 ListIterator	&operator++(){_ptr = _ptr->next; return *this;}
-                ListIterator	operator++(int){ListIterator it = *this; ++(*this); return it;}
+                ListIterator	operator++(int){ListIterator it = *this; _ptr = _ptr->next; return it;}
                 ListIterator	&operator--(){ _ptr = _ptr->prev; return *this;}
-                ListIterator	operator--(int){ListIterator it = *this; --(*this); return it;}
+                ListIterator	operator--(int){ListIterator it = *this; _ptr = _ptr->prev; return it;}
                 pointeur        get_ptr()const{return _ptr;}
 
                 bool			operator==(const ListIterator &it){ return _ptr == it.get_ptr();}
@@ -91,6 +91,7 @@ namespace ft
 
                 ConstListIterator(pointeur ptr = 0): _ptr(ptr){}
                 ConstListIterator(ListIterator const &cp){_ptr = cp.get_ptr();}
+                ConstListIterator(ConstListIterator const &cp){_ptr = cp.get_ptr();}
                 ConstListIterator operator=(ConstListIterator const &cp)
                 { 
                     if (this != &cp)
@@ -102,9 +103,9 @@ namespace ft
                 const_ref		operator*()const {return _ptr->data;}
                 pointeur        operator->()const{return _ptr;}
                 ConstListIterator	&operator++(){_ptr = _ptr->next; return *this;}
-                ConstListIterator	operator++(int){ConstListIterator it = *this; ++(*this); return it;}
+                ConstListIterator	operator++(int){ConstListIterator it = *this; _ptr = _ptr->next; return it;}
                 ConstListIterator	&operator--(){ _ptr = _ptr->prev; return *this;}
-                ConstListIterator	operator--(int){ConstListIterator it = *this; --(*this); return it;}
+                ConstListIterator	operator--(int){ConstListIterator it = *this; _ptr = _ptr->prev; return it;}
                 pointeur            get_ptr()const{return _ptr;}
                 
                 bool			operator==(const ConstListIterator &it){ return _ptr == it.get_ptr();}
@@ -134,9 +135,9 @@ namespace ft
                 value_type		&operator*()const {return _ptr->data;}
                 pointeur        operator->()const{return _ptr;}
                 ListRIterator	&operator++(){_ptr = _ptr->prev; return *this;}
-                ListRIterator	operator++(int){ListRIterator it = *this; ++(*this); return it;}
+                ListRIterator	operator++(int){ListRIterator it = *this; _ptr = _ptr->prev; return it;}
                 ListRIterator	&operator--(){ _ptr = _ptr->next; return *this;}
-                ListRIterator	operator--(int){ListRIterator it = *this; --(*this); return it;}
+                ListRIterator	operator--(int){ListRIterator it = *this; _ptr = _ptr->next; return it;}
                 pointeur        get_ptr()const{return _ptr;}
 
                 bool			operator==(const ListRIterator &it){ return _ptr == it.get_ptr();}
@@ -156,7 +157,9 @@ namespace ft
 
                 ConstListRIterator(pointeur ptr = 0): _ptr(ptr){}
                 ConstListRIterator(ListRIterator const &cp){_ptr = cp.get_ptr();}
+                ConstListRIterator(ConstListRIterator const &cp){_ptr = cp.get_ptr();}
                 ConstListRIterator(ListIterator const &cp){_ptr = cp.get_ptr()->prev;}
+                ConstListRIterator(ConstListIterator const &cp){_ptr = cp.get_ptr()->prev;}
                 ConstListRIterator operator=(ConstListRIterator const &cp)
                 { 
                     if (this != &cp)
@@ -168,9 +171,9 @@ namespace ft
                 const_ref		operator*()const {return _ptr->data;}
                 pointeur        operator->()const{return _ptr;}
                 ConstListRIterator	&operator++(){_ptr = _ptr->prev; return *this;}
-                ConstListRIterator	operator++(int){ConstListRIterator it = *this; ++(*this); return it;}
+                ConstListRIterator	operator++(int){ConstListRIterator it = *this; _ptr = _ptr->prev; return it;}
                 ConstListRIterator	&operator--(){ _ptr = _ptr->next; return *this;}
-                ConstListRIterator	operator--(int){ConstListRIterator it = *this; --(*this); return it;}
+                ConstListRIterator	operator--(int){ConstListRIterator it = *this;_ptr = _ptr->next; return it;}
                 pointeur            get_ptr()const{return _ptr;}
                 
                 bool			operator==(const ConstListRIterator &it){ return _ptr == it.get_ptr();}
@@ -353,7 +356,7 @@ namespace ft
             {
                 ft::ft_swap(_size, x._size);
 				ft::ft_swap(_list, x._list);
-                ft::ft_swap(_alloc, x._alloc;
+                ft::ft_swap(_alloc, x._alloc);
                 ft::ft_swap(_alloc_node, x._alloc_node);
             }
             void resize (size_type n, value_type val = value_type())
@@ -519,7 +522,7 @@ namespace ft
 				}
 
             }
-/////////////////////overload///////////////////////////////
+/////////////////////relational operators///////////////////////////////
         friend bool operator==(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
         {
             if (lhs._size != rhs._size)
@@ -533,8 +536,7 @@ namespace ft
             }
             return true;
         }
-        friend bool operator!= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs){ return !(lhs == rhs);}
-        friend bool operator<  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+        friend bool operator<(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
         {	
             const_iterator lit = lhs.begin();
 		    const_iterator rit = rhs.begin();
@@ -549,25 +551,31 @@ namespace ft
 		    }
 		    return rit != rhs.end();
         }
-        friend bool operator<= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
-        { 
-            if (lhs == rhs || lhs < rhs)
-                return true;
-            return false;
-        }
-		friend bool operator>  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
-        { 
-            if (!(lhs == rhs) && !(lhs < rhs)) 
-                return true;
-            return false;
-        }
-		friend bool operator>= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
-        { 
-            if (lhs == rhs || lhs > rhs)
-                return true;
-            return false;
-        }
     };
+    /////////////////////non-member overloads///////////////////////////////
+    template <class T, class Alloc>
+    bool operator!= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs){ return !(lhs == rhs);}
+    template <class T, class Alloc>
+    bool operator<= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+    { 
+        if (lhs == rhs || lhs < rhs)
+            return true;
+        return false;
+    }
+    template <class T, class Alloc>
+    bool operator>  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+    { 
+        if (!(lhs == rhs) && !(lhs < rhs)) 
+            return true;
+        return false;
+    }
+    template <class T, class Alloc>
+    bool operator>= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+    { 
+        if (lhs == rhs || lhs > rhs)
+            return true;
+        return false;
+    }
     template<class T >
     void	swap(list<T>& x, list<T>& y)
     {

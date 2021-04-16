@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 09:40:27 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/15 13:09:22 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/16 10:46:43 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ namespace ft
             {
                 difference_type diff = position - begin();			
 				insert(position, 1, val);
-				return begin() + diff; ///to check
+				return begin() + diff; 
                     
             }
             void insert (iterator position, size_type n, const value_type& val)
@@ -247,11 +247,12 @@ namespace ft
                 while (it != this->end())
                     tmp.push_back(*it++);
                 this->swap(tmp);
-                return begin() + diff;  /// to check
+                return begin() + diff;
             }
             iterator erase (iterator first, iterator last)
             {
                 vector tmp;
+                difference_type diff = first - begin();
                 tmp.reserve(_capacity);
                 iterator it = this->begin();
                 while (it < first)
@@ -259,7 +260,7 @@ namespace ft
                 while (last != this->end())
                     tmp.push_back(*last++);
                 this->swap(tmp);
-                return begin() + (first - begin()); ///to check
+                return begin() + diff;
             }
             void clear()
             {
@@ -273,62 +274,61 @@ namespace ft
                 ft::ft_swap(_size, x._size);
                 ft::ft_swap(_capacity, x._capacity);
             }
-            
-            // void printvector()                                  //////////////to delete////////////////////////////
-			// {
-			// 	for (size_type i = 0; i < _size; i++)
-			// 		std::cout << "[" << *(_vector + i) << "] ";
-			// 	std::cout << std::endl;
-			// }
-        /////////////////////overload///////////////////////////////
-        friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-        {
-            if (lhs._size != rhs._size)
-                return false;
-            for (size_t i = 0; i < lhs._size; i++)
+            /////////////////////relational operators///////////////////////////////
+            friend bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
             {
-                if (lhs._vector[i] != rhs._vector[i])
+                if (lhs._size != rhs._size)
                     return false;
+                for (size_t i = 0; i < lhs._size; i++)
+                {
+                    if (lhs._vector[i] != rhs._vector[i])
+                        return false;
+                }
+                return true;
             }
-            return true;
-        }
-        friend bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs ) { return !(lhs == rhs);}
-        friend bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-        {	
-            const_iterator lit = lhs.begin();
-		    const_iterator rit = rhs.begin();
+            friend bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+            {	
+                const_iterator lit = lhs.begin();
+                const_iterator rit = rhs.begin();
 
-		    while (lit != lhs.end())
-		    {
-			    if (rit == rhs.end() || *rit < *lit)
-				    return false;
-			    else if (*lit < *rit)
-				    return true;
-			    ++lit;
-			    ++rit;
-		    }
-		    return rit != rhs.end();
-        }
-        friend bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs )
-        { 
-            if (lhs == rhs || lhs < rhs)
-                return true;
-            return false;
-        }
-		friend bool operator>( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs )
-        { 
-            if (!(lhs == rhs) && !(lhs < rhs)) 
-                return true;
-            return false;
-        }
-		friend bool operator>=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs )
-        { 
-            if (lhs == rhs || lhs > rhs)
-                return true;
-            return false;
-        }
-        friend void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) { x.swap(y);}
+                while (lit != lhs.end())
+                {
+                    if (rit == rhs.end() || *rit < *lit)
+                        return false;
+                    else if (*lit < *rit)
+                        return true;
+                    ++lit;
+                    ++rit;
+                }
+                return rit != rhs.end();
+            }
     };
+    /////////////////////non-member overloads///////////////////////////////
+    template <class T, class Alloc>
+    bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs ) { return !(lhs == rhs);}
+    template <class T, class Alloc>
+    bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs )
+    { 
+        if (lhs == rhs || lhs < rhs)
+            return true;
+        return false;
+    }
+    template <class T, class Alloc>
+    bool operator>( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs )
+    { 
+        if (!(lhs == rhs) && !(lhs < rhs)) 
+            return true;
+        return false;
+    }
+    template <class T, class Alloc>
+    bool operator>=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs )
+    { 
+        if (lhs == rhs || lhs > rhs)
+            return true;
+        return false;
+    }
+    template <class T, class Alloc>
+    void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) { x.swap(y);}
 }
 
 #endif
