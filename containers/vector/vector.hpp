@@ -117,24 +117,20 @@ namespace ft
             {
                 if (n > _capacity)
                 {
-                    try
-                    {                        
-                        pointer temp = _alloc.allocate(n);
-                        int i = 0;
-                        for (iterator it = begin(); it != end(); it++)
-                        {
-                            _alloc.construct(temp + i, *it);
-                            _alloc.destroy(it.get_ptr());
-                            i++;
-                        }
-                        _alloc.deallocate(_vector, _capacity);
-                        _capacity = n;
-                        _vector = temp;
-                    }
-                    catch(const std::exception& e)
+                    if (n > this->max_size())
+					    throw std::length_error("vector::reserve");
+                    pointer temp = _alloc.allocate(n);
+                    int i = 0;
+                    for (iterator it = begin(); it != end(); it++)
                     {
-                        std::cerr << e.what() << '\n';
+                        _alloc.construct(temp + i, *it);
+                        _alloc.destroy(it.get_ptr());
+                        i++;
                     }
+                    _alloc.deallocate(_vector, _capacity);
+                    _capacity = n;
+                    _vector = temp;
+
                 }
             }
 /////////////////////acces///////////////////////////////////

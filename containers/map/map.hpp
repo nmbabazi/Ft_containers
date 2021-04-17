@@ -16,6 +16,7 @@
 #include <memory>
 #include <iostream>
 #include <limits>
+#include <cstddef>
 #include "pair.hpp"
 #include "../../allocator.hpp"
 #include "../../utils.hpp"
@@ -93,7 +94,9 @@ namespace ft
                     {
                         ret = this->right;
                         while(ret->left)
+                        {
                             ret = ret->left;
+                        }
                         return (ret);
                     }
                 }
@@ -270,11 +273,18 @@ namespace ft
                 _alloc.destroy(&_begin->data);
                 _alloc_node.deallocate(_end, 1);
                 _alloc_node.deallocate(_begin, 1);
+                _end = NULL;
+                _begin = NULL;
             }
 
 			map& operator=(const map& x)
             {
                 clear();
+                _alloc.destroy(&_end->data);
+                _alloc.destroy(&_begin->data);
+                _alloc_node.deallocate(_end, 1);
+                _alloc_node.deallocate(_begin, 1);
+                initMap();
                 insert(x.begin(), x.end());
                 return (*this);
             }
@@ -355,7 +365,8 @@ namespace ft
             }
 			void clear()
             {
-                erase(begin(), end());
+                while (_size)
+                    erase(begin());
             }
 /////////////////////observer///////////////////////////////        
 			key_compare key_comp() const{return _comp;}
@@ -482,21 +493,24 @@ namespace ft
                 }
                 return (NULL);
             }
-            void my_erase(key_type val, Node **tree)
+            iterator my_erase(key_type val, Node **tree)
             {
                 if (!*tree)
-                    return ;
+                    return NULL;
                 Node *tmp = search_bykey(val, *tree);
-                if (!tmp)
-                    return ;
+                
+                if (!tmp || tmp == _end || tmp == _begin)
+                {
+                    return NULL;
+                }
+                iterator ret = tmp->getnext();
                 if (_size == 1)
                 {
                     _alloc.destroy(&_root->data);
                     _alloc_node.deallocate(_root, 1);
                     _root = NULL;
-                    initMap();
                     _size--;
-                    return ;
+                    return ret;
                 }
                 else if (tmp->left == NULL && tmp->right == NULL)
                 {
@@ -510,7 +524,7 @@ namespace ft
                     _alloc_node.deallocate(tmp, 1);
                     tmp = NULL; 
                     _size--;
-                    return ;
+                    return ret;
                 }
                 else if (tmp->left == NULL)
                 {
@@ -525,7 +539,7 @@ namespace ft
                     _alloc_node.deallocate(&(*tmp), 1);
                     tmp = NULL; 
                     _size--;
-                    return ;
+                    return ret;
                 }
                 else if (tmp->right == NULL)
                 {
@@ -540,15 +554,16 @@ namespace ft
                     _alloc_node.deallocate(tmp, 1);
                     tmp = NULL; 
                     _size--;
-                    return ;
+                    return ret;
                 }
                 else if (tmp->left != NULL && tmp->right != NULL)
-                {                  
+                {             
                     Node *temp = getBegin(tmp->right);
                     _alloc.destroy(&tmp->data);
                     _alloc.construct(&tmp->data, temp->data);
                     my_erase(tmp->data.first, &tmp->right);
                 }
+                return NULL;
             }
             Node    *new_node(value_type val)
             {

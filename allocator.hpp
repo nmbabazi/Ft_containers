@@ -40,7 +40,7 @@ namespace ft
             pointer address(reference x ) const{ return &x;}
             const_pointer address(const_reference x ) const{ return &x;}
             
-            size_type max_size() const { return static_cast<size_type>(-1) / sizeof(value_type);} ///to check
+            size_type max_size() const { return static_cast<size_type>(-1) / sizeof(value_type);} 
 
             pointer allocate(size_type n)
             {
