@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/16 13:01:54 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/17 14:41:05 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 #include "../list/list.hpp"
 #include <queue>
 #include <list>
-
-/*******************************************************************************/
-/**Basic test provided on cplusplus.com. STL outputs are copied from the site.**/
-/*******************************************************************************/
 
 int main()
 {

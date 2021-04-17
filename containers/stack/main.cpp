@@ -6,7 +6,7 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/16 12:07:07 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/17 14:41:15 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 #include <stack>
 #include <vector>
 #include <iostream>
-
-/*******************************************************************************/
-/**Basic test provided on cplusplus.com. STL outputs are copied from the site.**/
-/*******************************************************************************/
 
 int main()
 {

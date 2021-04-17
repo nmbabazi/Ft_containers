@@ -6,17 +6,13 @@
 /*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/16 10:23:59 by nmbabazi         ###   ########.fr       */
+/*   Updated: 2021/04/17 14:41:22 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
 #include <vector>
 #include <iostream>
-
-/*******************************************************************************/
-/**Basic test provided on cplusplus.com. STL outputs are copied from the site.**/
-/*******************************************************************************/
 
 int main ()
 {

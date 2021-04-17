@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.cpp                                           :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nmbabazi <nmbabazi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:29:25 by nailambz          #+#    #+#             */
-/*   Updated: 2021/04/15 17:58:24 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/17 14:39:54 by nmbabazi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@
 #include <cmath>
 #include <vector>
 #include <iostream>
-
-/*******************************************************************************/
-/**Basic test provided on cplusplus.com. STL outputs are copied from the site.**/
-/*******************************************************************************/
 
 bool fncomp (char lhs, char rhs) {return lhs<rhs;}
 
