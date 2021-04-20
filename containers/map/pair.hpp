@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pair.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nailambz <nailambz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:25:47 by nmbabazi          #+#    #+#             */
-/*   Updated: 2021/04/15 13:52:11 by nailambz         ###   ########.fr       */
+/*   Updated: 2021/04/20 10:06:24 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ namespace ft
             second = pr.second;
             return *this;
         }
-
+        ~pair(){}
         T1 first;
         T2 second;
     };
